@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Awesome-Graphs</title>
+  <script type="text/javascript"
+          src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    #network {
+      width: 100%;
+      height: 1200px;
+    }
+
+    input {
+      width: 200px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 16px;
+      border: 1px solid #CCC;
+      border-radius: 5px 0 0 5px;
+      padding-left: 10px;
+    }
+
+    button {
+      width: 80px;
+      height: 44px;
+      line-height: 44px;
+      position: relative;
+      top: 1px;
+      left: -6px;
+      border-radius: 0 5px 5px 0;
+      border: 1px solid #CCC;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+<div style="position: absolute; top: 30px;left: 30px;z-index: 2;">
+  <input type="text" id="searchInput" placeholder="Graph System Name">
+  <button id="searchButton">Search</button>
+</div>
+<div id="network"></div>
+
+<script type="text/javascript">
+    var input = document.getElementById('searchInput');
+
+    // create nodes
+    var nodes = new vis.DataSet([
+        {id: 'A1', label: 'A1'},
+        {id: 'AeonG', label: 'AeonG'},
+        {id: 'Aspire', label: 'Aspire'},
+        {id: 'AsynGraph', label: 'AsynGraph'},
+        {id: 'Auxo', label: 'Auxo'},
+        {id: 'Blaze', label: 'Blaze'},
+        {id: 'BlitzG', label: 'BlitzG'},
+        {id: 'Blogel', label: 'Blogel'},
+        {id: 'ByteGraph', label: 'ByteGraph'},
+        {id: 'CGgraph', label: 'CGgraph'},
+        {id: 'CGraph', label: 'CGraph'},
+        {id: 'CSMqGraph', label: 'CSMqGraph'},
+        {id: 'Chaos', label: 'Chaos'},
+        {id: 'Chronograph', label: 'Chronograph'},
+        {id: 'Chronos', label: 'Chronos'},
+        {id: 'Clip', label: 'Clip'},
+        {id: 'CoRAL', label: 'CoRAL'},
+        {id: 'CommonGraph', label: 'CommonGraph'},
+        {id: 'CuSha', label: 'CuSha'},
+        {id: 'Cymbalo', label: 'Cymbalo'},
+        {id: 'D2Graph', label: 'D2Graph'},
+        {id: 'DD-Graph', label: 'DD-Graph'},
+        {id: 'DFOGraph', label: 'DFOGraph'},
+        {id: 'DZiG', label: 'DZiG'},
+        {id: 'DepGraph', label: 'DepGraph'},
+        {id: 'DiGraph', label: 'DiGraph'},
+        {id: 'Differential Dataflow', label: 'Differential Dataflow'},
+        {id: 'DiterGraph', label: 'DiterGraph'},
+        {id: 'DynamoGraph', label: 'DynamoGraph'},
+        {id: 'EGraph', label: 'EGraph'},
+        {id: 'EPGraph', label: 'EPGraph'},
+        {id: 'EmptyHeaded', label: 'EmptyHeaded'},
+        {id: 'FBSGraph', label: 'FBSGraph'},
+        {id: 'Fargraph+', label: 'Fargraph+'},
+        {id: 'Fennel', label: 'Fennel'},
+        {id: 'FlashGraph', label: 'FlashGraph'},
+        {id: 'Frog', label: 'Frog'},
+        {id: 'G-Store', label: 'G-Store'},
+        {id: 'G-Tran', label: 'G-Tran'},
+        {id: 'GBASE', label: 'GBASE'},
+        {id: 'GFlink', label: 'GFlink'},
+        {id: 'GGraph', label: 'GGraph'},
+        {id: 'GPOP', label: 'GPOP'},
+        {id: 'GPS', label: 'GPS'},
+        {id: 'GRADOOP', label: 'GRADOOP'},
+        {id: 'GRAM', label: 'GRAM'},
+        {id: 'GRAPE', label: 'GRAPE'},
+        {id: 'GStream', label: 'GStream'},
+        {id: 'Garaph', label: 'Garaph'},
+        {id: 'GasCL', label: 'GasCL'},
+        {id: 'GeaFlow', label: 'GeaFlow'},
+        {id: 'Gemini', label: 'Gemini'},
+        {id: 'Giraph unchained', label: 'Giraph unchained'},
+        {id: 'Giraph', label: 'Giraph'},
+        {id: 'GoFFish', label: 'GoFFish'},
+        {id: 'GraPU', label: 'GraPU'},
+        {id: 'GraVF', label: 'GraVF'},
+        {id: 'GrapH', label: 'GrapH'},
+        {id: 'Graph Database', label: 'Graph Database', color: 'white', _type: 'db'},
+        {id: 'Graph3S', label: 'Graph3S'},
+        {id: 'GraphA', label: 'GraphA'},
+        {id: 'GraphABCD', label: 'GraphABCD'},
+        {id: 'GraphBolt', label: 'GraphBolt'},
+        {id: 'GraphBuilder', label: 'GraphBuilder'},
+        {id: 'GraphCP', label: 'GraphCP'},
+        {id: 'GraphCage', label: 'GraphCage'},
+        {id: 'GraphChi', label: 'GraphChi'},
+        {id: 'GraphD', label: 'GraphD'},
+        {id: 'GraphDuo', label: 'GraphDuo'},
+        {id: 'GraphFly', label: 'GraphFly'},
+        {id: 'GraphGen', label: 'GraphGen'},
+        {id: 'GraphGrind', label: 'GraphGrind'},
+        {id: 'GraphH', label: 'GraphH'},
+        {id: 'GraphIA', label: 'GraphIA'},
+        {id: 'GraphIn', label: 'GraphIn'},
+        {id: 'GraphLab', label: 'GraphLab'},
+        {id: 'GraphM', label: 'GraphM'},
+        {id: 'GraphMP', label: 'GraphMP'},
+        {id: 'GraphMap', label: 'GraphMap'},
+        {id: 'GraphMat', label: 'GraphMat'},
+        {id: 'GraphOne', label: 'GraphOne'},
+        {id: 'GraphP', label: 'GraphP'},
+        {id: 'GraphPEG', label: 'GraphPEG'},
+        {id: 'GraphPIM', label: 'GraphPIM'},
+        {id: 'GraphPhi', label: 'GraphPhi'},
+        {id: 'GraphPulse', label: 'GraphPulse'},
+        {id: 'GraphQ', label: 'GraphQ'},
+        {id: 'GraphR', label: 'GraphR'},
+        {id: 'GraphReduce', label: 'GraphReduce'},
+        {id: 'GraphSD', label: 'GraphSD'},
+        {id: 'GraphScSh', label: 'GraphScSh'},
+        {id: 'GraphScope', label: 'GraphScope'},
+        {id: 'GraphTides', label: 'GraphTides'},
+        {id: 'GraphTinker', label: 'GraphTinker'},
+        {id: 'GraphTune', label: 'GraphTune'},
+        {id: 'GraphTwist', label: 'GraphTwist'},
+        {id: 'GraphX', label: 'GraphX'},
+        {id: 'GraphZ', label: 'GraphZ'},
+        {id: 'Graphene', label: 'Graphene'},
+        {id: 'Graphflow', label: 'Graphflow'},
+        {id: 'Graphie', label: 'Graphie'},
+        {id: 'Graspan', label: 'Graspan'},
+        {id: 'Grasper', label: 'Grasper'},
+        {id: 'Gre', label: 'Gre'},
+        {id: 'GridGraph', label: 'GridGraph'},
+        {id: 'HGraph', label: 'HGraph'},
+        {id: 'HPGraph', label: 'HPGraph'},
+        {id: 'HUS-Graph', label: 'HUS-Graph'},
+        {id: 'Haloop', label: 'Haloop'},
+        {id: 'HipG', label: 'HipG'},
+        {id: 'HitGraph', label: 'HitGraph'},
+        {id: 'HotGraph', label: 'HotGraph'},
+        {id: 'HyTGraph', label: 'HyTGraph'},
+        {id: 'HyVE', label: 'HyVE'},
+        {id: 'HybridGraph', label: 'HybridGraph'},
+        {id: 'ImmortalGraph', label: 'ImmortalGraph'},
+        {id: 'JanusGraph', label: 'JanusGraph', color: 'white', _type: 'db'},
+        {id: 'KickStarter', label: 'KickStarter'},
+        {id: 'KineoGraph', label: 'KineoGraph'},
+        {id: 'L-PowerGraph', label: 'L-PowerGraph'},
+        {id: 'LCC-Graph', label: 'LCC-Graph'},
+        {id: 'LFGGraph', label: 'LFGGraph'},
+        {id: 'LLAMA', label: 'LLAMA'},
+        {id: 'LOSC', label: 'LOSC'},
+        {id: 'LargeGraph', label: 'LargeGraph'},
+        {id: 'LazyGraph', label: 'LazyGraph'},
+        {id: 'LightGraph', label: 'LightGraph'},
+        {id: 'Ligra', label: 'Ligra'},
+        {id: 'LiveGraph', label: 'LiveGraph'},
+        {id: 'Lumos', label: 'Lumos'},
+        {id: 'MMap', label: 'MMap'},
+        {id: 'Maiter', label: 'Maiter'},
+        {id: 'MapGraph', label: 'MapGraph'},
+        {id: 'Medusa', label: 'Medusa'},
+        {id: 'Mizan', label: 'Mizan'},
+        {id: 'MocGraph', label: 'MocGraph'},
+        {id: 'Mosaic', label: 'Mosaic'},
+        {id: 'MultiLogVC', label: 'MultiLogVC'},
+        {id: 'NGraph', label: 'NGraph'},
+        {id: 'NPGraph', label: 'NPGraph'},
+        {id: 'NScale', label: 'NScale'},
+        {id: 'Naiad', label: 'Naiad'},
+        {id: 'Neo4j', label: 'Neo4j', color: 'white', _type: 'db'},
+        {id: 'NxGraph', label: 'NxGraph'},
+        {id: 'PGAbB', label: 'PGAbB'},
+        {id: 'PGX.D', label: 'PGX.D'},
+        {id: 'PartitionedVC', label: 'PartitionedVC'},
+        {id: 'PathGraph', label: 'PathGraph'},
+        {id: 'PowerGraph', label: 'PowerGraph'},
+        {id: 'PowerLyra', label: 'PowerLyra'},
+        {id: 'PrIter', label: 'PrIter'},
+        {id: 'Pregel', label: 'Pregel'},
+        {id: 'Pregelix', label: 'Pregelix'},
+        {id: 'Quegel', label: 'Quegel'},
+        {id: 'Raphtory', label: 'Raphtory'},
+        {id: 'ReGraph', label: 'ReGraph'},
+        {id: 'Ringo', label: 'Ringo'},
+        {id: 'RisGraph', label: 'RisGraph'},
+        {id: 'SGraph', label: 'SGraph'},
+        {id: 'SNAP', label: 'SNAP'},
+        {id: 'STINGER', label: 'STINGER'},
+        {id: 'SaGraph', label: 'SaGraph'},
+        {id: 'ScalaGraph', label: 'ScalaGraph'},
+        {id: 'ScaleG', label: 'ScaleG'},
+        {id: 'Scaph', label: 'Scaph'},
+        {id: 'Seraph', label: 'Seraph'},
+        {id: 'ShenTu', label: 'ShenTu'},
+        {id: 'Subway', label: 'Subway'},
+        {id: 'SympleGraph', label: 'SympleGraph'},
+        {id: 'TDGraph', label: 'TDGraph'},
+        {id: 'TIDE', label: 'TIDE'},
+        {id: 'TeGraph', label: 'TeGraph'},
+        {id: 'TeGraph+', label: 'TeGraph+'},
+        {id: 'Tegra', label: 'Tegra'},
+        {id: 'ThunderGP', label: 'ThunderGP'},
+        {id: 'TigerGraph', label: 'TigerGraph', color: 'white', _type: 'db'},
+        {id: 'Tigr', label: 'Tigr'},
+        {id: 'Tornado', label: 'Tornado'},
+        {id: 'Trinity', label: 'Trinity'},
+        {id: 'Tripoline', label: 'Tripoline'},
+        {id: 'TuGraph', label: 'TuGraph', color: 'white', _type: 'db'},
+        {id: 'TurboGraph', label: 'TurboGraph'},
+        {id: 'VENUS', label: 'VENUS'},
+        {id: 'VGL', label: 'VGL'},
+        {id: 'VersionTraveler', label: 'VersionTraveler'},
+        {id: 'Weaver', label: 'Weaver'},
+        {id: 'WolfGraph', label: 'WolfGraph'},
+        {id: 'WonderLand', label: 'WonderLand'},
+        {id: 'X-Stream', label: 'X-Stream'},
+        {id: 'XPGraph', label: 'XPGraph'},
+        {id: 'Zorro', label: 'Zorro'},
+        {id: 'faimGraph', label: 'faimGraph'},
+        {id: 'iGraph', label: 'iGraph'},
+        {id: 'iMapReduce', label: 'iMapReduce'},
+        {id: 'iPregel', label: 'iPregel'},
+        {id: 'iTurboGraph', label: 'iTurboGraph'},
+    ]);
+    // create edges
+    var edges = new vis.DataSet([
+        {from: 'A1', to: 'Trinity'},
+        {from: 'AeonG', to: 'Auxo'},
+        {from: 'AeonG', to: 'G-Tran'},
+        {from: 'AeonG', to: 'GRADOOP'},
+        {from: 'AeonG', to: 'Graphflow'},
+        {from: 'AeonG', to: 'LiveGraph'},
+        {from: 'Aspire', to: 'Ligra'},
+        {from: 'AsynGraph', to: 'DiGraph'},
+        {from: 'AsynGraph', to: 'Garaph'},
+        {from: 'AsynGraph', to: 'Maiter'},
+        {from: 'AsynGraph', to: 'Tigr'},
+        {from: 'Auxo', to: 'Chronos'},
+        {from: 'Blaze', to: 'Lumos'},
+        {from: 'BlitzG', to: 'DD-Graph'},
+        {from: 'BlitzG', to: 'GRAM'},
+        {from: 'BlitzG', to: 'GoFFish'},
+        {from: 'BlitzG', to: 'MocGraph'},
+        {from: 'BlitzG', to: 'Seraph'},
+        {from: 'Blogel', to: 'Giraph'},
+        {from: 'Blogel', to: 'PowerGraph'},
+        {from: 'ByteGraph', to: 'G-Tran'},
+        {from: 'ByteGraph', to: 'Graphflow'},
+        {from: 'ByteGraph', to: 'LiveGraph'},
+        {from: 'CGgraph', to: 'GPOP'},
+        {from: 'CGgraph', to: 'HyTGraph'},
+        {from: 'CGgraph', to: 'LargeGraph'},
+        {from: 'CGraph', to: 'GRAM'},
+        {from: 'CGraph', to: 'HUS-Graph'},
+        {from: 'CGraph', to: 'Mosaic'},
+        {from: 'CGraph', to: 'NxGraph'},
+        {from: 'CGraph', to: 'Seraph'},
+        {from: 'CGraph', to: 'VersionTraveler'},
+        {from: 'CSMqGraph', to: 'Graphene'},
+        {from: 'CSMqGraph', to: 'HGraph'},
+        {from: 'CSMqGraph', to: 'NxGraph'},
+        {
+            from: 'Chaos',
+            to: 'GRAM',
+            color: 'red',
+            arrows: {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}}
+        },
+        {from: 'Chaos', to: 'GridGraph'},
+        {from: 'Chronograph', to: 'ImmortalGraph'},
+        {from: 'Chronos', to: 'Ligra'},
+        {from: 'Chronos', to: 'Naiad'},
+        {from: 'Clip', to: 'Graphene'},
+        {from: 'CoRAL', to: 'Aspire'},
+        {from: 'CoRAL', to: 'Trinity'},
+        {from: 'CommonGraph', to: 'GraphOne'},
+        {from: 'CommonGraph', to: 'GraphPulse'},
+        {from: 'CommonGraph', to: 'TDGraph'},
+        {from: 'CommonGraph', to: 'Tripoline'},
+        {from: 'CuSha', to: 'Medusa'},
+        {from: 'Cymbalo', to: 'GraphD'},
+        {from: 'Cymbalo', to: 'WonderLand'},
+        {from: 'D2Graph', to: 'GraphMP'},
+        {from: 'D2Graph', to: 'Graphene'},
+        {from: 'D2Graph', to: 'MMap'},
+        {from: 'D2Graph', to: 'WolfGraph'},
+        {from: 'DD-Graph', to: 'Chaos'},
+        {from: 'DFOGraph', to: 'HGraph'},
+        {from: 'DFOGraph', to: 'HybridGraph'},
+        {from: 'DFOGraph', to: 'Lumos'},
+        {from: 'DZiG', to: 'GraphOne'},
+        {from: 'DZiG', to: 'ImmortalGraph'},
+        {from: 'DZiG', to: 'Lumos'},
+        {from: 'DepGraph', to: 'AsynGraph'},
+        {from: 'DepGraph', to: 'GGraph'},
+        {from: 'DepGraph', to: 'GraphABCD'},
+        {from: 'DepGraph', to: 'GraphH'},
+        {from: 'DepGraph', to: 'GraphM'},
+        {from: 'DepGraph', to: 'GraphPIM'},
+        {from: 'DepGraph', to: 'GraphR'},
+        {from: 'DepGraph', to: 'NGraph'},
+        {from: 'DiGraph', to: 'FBSGraph'},
+        {from: 'DiGraph', to: 'GraphGrind'},
+        {from: 'DiGraph', to: 'Graphie'},
+        {from: 'DiGraph', to: 'HotGraph'},
+        {from: 'DiGraph', to: 'NxGraph'},
+        {from: 'DiGraph', to: 'ReGraph'},
+        {from: 'DiGraph', to: 'WonderLand'},
+        {from: 'Differential Dataflow', to: 'Pregel'},
+        {from: 'Differential Dataflow', to: 'iMapReduce'},
+        {from: 'DiterGraph', to: 'HybridGraph'},
+        {from: 'DynamoGraph', to: 'ImmortalGraph'},
+        {from: 'EGraph', to: 'DZiG'},
+        {from: 'EGraph', to: 'DiGraph'},
+        {from: 'EGraph', to: 'GraphTinker'},
+        {from: 'EPGraph', to: 'D2Graph'},
+        {from: 'EPGraph', to: 'DFOGraph'},
+        {from: 'EPGraph', to: 'HyVE'},
+        {from: 'EmptyHeaded', to: 'GraphX'},
+        {from: 'EmptyHeaded', to: 'Ligra'},
+        {from: 'EmptyHeaded', to: 'SNAP'},
+        {from: 'FBSGraph', to: 'CoRAL'},
+        {from: 'FBSGraph', to: 'PowerLyra'},
+        {from: 'FBSGraph', to: 'Pregelix'},
+        {from: 'Fargraph+', to: 'GraphCP'},
+        {from: 'Fargraph+', to: 'HUS-Graph'},
+        {from: 'Fennel', to: 'PowerGraph'},
+        {from: 'FlashGraph', to: 'Maiter'},
+        {from: 'FlashGraph', to: 'TurboGraph'},
+        {from: 'Frog', to: 'CuSha'},
+        {from: 'Frog', to: 'Ligra'},
+        {from: 'Frog', to: 'X-Stream'},
+        {from: 'G-Store', to: 'Chaos'},
+        {from: 'G-Tran', to: 'A1'},
+        {from: 'G-Tran', to: 'PowerLyra'},
+        {from: 'G-Tran', to: 'SGraph'},
+        {from: 'G-Tran', to: 'TigerGraph'},
+        {from: 'G-Tran', to: 'Weaver'},
+        {from: 'GBASE', to: 'Pregel'},
+        {from: 'GFlink', to: 'Medusa'},
+        {from: 'GGraph', to: 'FBSGraph'},
+        {from: 'GGraph', to: 'GrapH'},
+        {from: 'GGraph', to: 'GraphA'},
+        {from: 'GGraph', to: 'GraphM'},
+        {from: 'GGraph', to: 'HGraph'},
+        {from: 'GGraph', to: 'HUS-Graph'},
+        {from: 'GPOP', to: 'GoFFish'},
+        {from: 'GPOP', to: 'GridGraph'},
+        {from: 'GPS', to: 'iMapReduce'},
+        {from: 'GRADOOP', to: 'Raphtory'},
+        {from: 'GRAM', to: 'PowerLyra'},
+        {from: 'GRAPE', to: 'Blogel'},
+        {from: 'GStream', to: 'CuSha'},
+        {from: 'GStream', to: 'Trinity'},
+        {from: 'GStream', to: 'TurboGraph'},
+        {from: 'Garaph', to: 'Chaos'},
+        {from: 'Garaph', to: 'CuSha'},
+        {from: 'Garaph', to: 'GStream'},
+        {from: 'Garaph', to: 'Gemini'},
+        {from: 'GasCL', to: 'Medusa'},
+        {from: 'GasCL', to: 'X-Stream'},
+        {from: 'GeaFlow', to: 'ByteGraph'},
+        {from: 'GeaFlow', to: 'RisGraph'},
+        {from: 'GeaFlow', to: 'TuGraph'},
+        {from: 'GeaFlow', to: 'iGraph'},
+        {from: 'Gemini', to: 'GridGraph'},
+        {from: 'Gemini', to: 'LazyGraph'},
+        {from: 'Giraph unchained', to: 'Pregelix'},
+        {from: 'Giraph', to: 'Pregel'},
+        {from: 'GoFFish', to: 'Trinity'},
+        {from: 'GraPU', to: 'Gemini'},
+        {from: 'GraPU', to: 'GoFFish'},
+        {from: 'GraPU', to: 'KickStarter'},
+        {from: 'GraPU', to: 'Tigr'},
+        {from: 'GraPU', to: 'VersionTraveler'},
+        {from: 'GraPU', to: 'WonderLand'},
+        {from: 'GraPU', to: 'Zorro'},
+        {from: 'GraVF', to: 'GraphGen'},
+        {from: 'GrapH', to: 'GridGraph'},
+        {from: 'Graph3S', to: 'Graphene'},
+        {from: 'Graph3S', to: 'HybridGraph'},
+        {from: 'GraphA', to: 'GFlink'},
+        {from: 'GraphA', to: 'GraphR'},
+        {from: 'GraphABCD', to: 'Clip'},
+        {from: 'GraphABCD', to: 'GraphP'},
+        {from: 'GraphABCD', to: 'Tigr'},
+        {from: 'GraphABCD', to: 'WonderLand'},
+        {from: 'GraphBolt', to: 'GraphIn'},
+        {from: 'GraphBolt', to: 'KickStarter'},
+        {from: 'GraphBuilder', to: 'Trinity'},
+        {from: 'GraphCP', to: 'CGraph'},
+        {from: 'GraphCP', to: 'GraphM'},
+        {from: 'GraphCP', to: 'GraphZ'},
+        {from: 'GraphCP', to: 'Seraph'},
+        {from: 'GraphCP', to: 'VENUS'},
+        {from: 'GraphCage', to: 'GraphMat'},
+        {from: 'GraphCage', to: 'GraphPhi'},
+        {from: 'GraphChi', to: 'GPS'},
+        {from: 'GraphChi', to: 'KineoGraph'},
+        {
+            from: 'GraphChi',
+            to: 'PowerGraph',
+            color: 'red',
+            arrows: {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}}
+        },
+        {from: 'GraphD', to: 'Blogel'},
+        {from: 'GraphD', to: 'G-Store'},
+        {from: 'GraphD', to: 'Pregelix'},
+        {from: 'GraphD', to: 'VENUS'},
+        {from: 'GraphDuo', to: 'GrapH'},
+        {from: 'GraphDuo', to: 'GraphD'},
+        {from: 'GraphDuo', to: 'GraphIn'},
+        {from: 'GraphDuo', to: 'GraphP'},
+        {from: 'GraphDuo', to: 'WonderLand'},
+        {from: 'GraphFly', to: 'LiveGraph'},
+        {from: 'GraphFly', to: 'ScalaGraph'},
+        {from: 'GraphFly', to: 'Tripoline'},
+        {from: 'GraphGen', to: 'GraphChi'},
+        {from: 'GraphGrind', to: 'Ligra'},
+        {from: 'GraphH', to: 'Garaph'},
+        {from: 'GraphH', to: 'GraphPIM'},
+        {from: 'GraphH', to: 'MocGraph'},
+        {from: 'GraphH', to: 'NxGraph'},
+        {from: 'GraphIA', to: 'Gemini'},
+        {from: 'GraphIA', to: 'GraphH'},
+        {from: 'GraphIA', to: 'GraphP'},
+        {from: 'GraphIA', to: 'NxGraph'},
+        {from: 'GraphIn', to: 'GraphMat'},
+        {from: 'GraphIn', to: 'GraphReduce'},
+        {from: 'GraphLab', to: 'Pregel'},
+        {from: 'GraphM', to: 'DiGraph'},
+        {from: 'GraphM', to: 'GraphR'},
+        {from: 'GraphM', to: 'Lumos'},
+        {from: 'GraphMP', to: 'GraphD'},
+        {from: 'GraphMP', to: 'GraphH'},
+        {from: 'GraphMP', to: 'Mosaic'},
+        {from: 'GraphMap', to: 'DiGraph'},
+        {from: 'GraphMap', to: 'GraphD'},
+        {from: 'GraphMap', to: 'GraphTwist'},
+        {from: 'GraphMap', to: 'Pregelix'},
+        {from: 'GraphMat', to: 'GraphX'},
+        {from: 'GraphMat', to: 'MapGraph'},
+        {from: 'GraphOne', to: 'GBASE'},
+        {from: 'GraphOne', to: 'GraPU'},
+        {from: 'GraphOne', to: 'GraphBolt'},
+        {from: 'GraphOne', to: 'GraphD'},
+        {from: 'GraphOne', to: 'Graphene'},
+        {from: 'GraphOne', to: 'Mosaic'},
+        {from: 'GraphOne', to: 'STINGER'},
+        {from: 'GraphOne', to: 'TIDE'},
+        {from: 'GraphP', to: 'GraphPIM'},
+        {from: 'GraphP', to: 'GridGraph'},
+        {from: 'GraphPEG', to: 'DiGraph'},
+        {from: 'GraphPEG', to: 'GraphCage'},
+        {from: 'GraphPEG', to: 'Tigr'},
+        {from: 'GraphPIM', to: 'GraphChi'},
+        {from: 'GraphPhi', to: 'GraphReduce'},
+        {from: 'GraphPhi', to: 'Graphie'},
+        {from: 'GraphPulse', to: 'FBSGraph'},
+        {from: 'GraphPulse', to: 'GraphPIM'},
+        {from: 'GraphPulse', to: 'Maiter'},
+        {from: 'GraphQ', to: 'X-Stream'},
+        {from: 'GraphR', to: 'GraphPIM'},
+        {from: 'GraphR', to: 'GridGraph'},
+        {from: 'GraphReduce', to: 'CuSha'},
+        {from: 'GraphReduce', to: 'MapGraph'},
+        {from: 'GraphReduce', to: 'X-Stream'},
+        {from: 'GraphSD', to: 'Giraph unchained'},
+        {from: 'GraphSD', to: 'GraphZ'},
+        {from: 'GraphSD', to: 'Lumos'},
+        {from: 'GraphSD', to: 'MultiLogVC'},
+        {from: 'GraphScSh', to: 'CGraph'},
+        {from: 'GraphScSh', to: 'HGraph'},
+        {from: 'GraphScope', to: 'A1'},
+        {from: 'GraphScope', to: 'EmptyHeaded'},
+        {from: 'GraphScope', to: 'Fennel'},
+        {from: 'GraphScope', to: 'Gemini'},
+        {from: 'GraphTides', to: 'Chronograph'},
+        {from: 'GraphTides', to: 'GoFFish'},
+        {from: 'GraphTides', to: 'KickStarter'},
+        {from: 'GraphTides', to: 'Weaver'},
+        {from: 'GraphTinker', to: 'GraphIn'},
+        {from: 'GraphTune', to: 'CGraph'},
+        {from: 'GraphTune', to: 'Giraph unchained'},
+        {from: 'GraphTune', to: 'GraphM'},
+        {from: 'GraphTwist', to: 'GraphX'},
+        {from: 'GraphTwist', to: 'TurboGraph'},
+        {from: 'GraphX', to: 'PowerGraph'},
+        {from: 'GraphZ', to: 'Gemini'},
+        {from: 'Graphene', to: 'Chaos'},
+        {from: 'Graphene', to: 'Gre'},
+        {from: 'Graphene', to: 'Maiter'},
+        {from: 'Graphene', to: 'WonderLand'},
+        {from: 'Graphflow', to: 'Neo4j'},
+        {from: 'Graphie', to: 'PathGraph'},
+        {from: 'Graphie', to: 'PowerLyra'},
+        {from: 'Graspan', to: 'Aspire'},
+        {from: 'Graspan', to: 'GridGraph'},
+        {from: 'Grasper', to: 'GraphD'},
+        {from: 'Gre', to: 'Mizan'},
+        {from: 'Gre', to: 'X-Stream'},
+        {from: 'GridGraph', to: 'FlashGraph'},
+        {
+            from: 'GridGraph',
+            to: 'GraphQ',
+            color: 'red',
+            arrows: {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}}
+        },
+        {from: 'GridGraph', to: 'LightGraph'},
+        {from: 'GridGraph', to: 'MMap'},
+        {from: 'GridGraph', to: 'PowerLyra'},
+        {from: 'HGraph', to: 'Blogel'},
+        {from: 'HGraph', to: 'GBASE'},
+        {from: 'HGraph', to: 'Gre'},
+        {from: 'HGraph', to: 'LFGGraph'},
+        {from: 'HGraph', to: 'Pregelix'},
+        {from: 'HGraph', to: 'Seraph'},
+        {from: 'HPGraph', to: 'GraphZ'},
+        {from: 'HPGraph', to: 'MMap'},
+        {from: 'HUS-Graph', to: 'BlitzG'},
+        {from: 'HUS-Graph', to: 'Gemini'},
+        {from: 'HUS-Graph', to: 'Graphene'},
+        {from: 'HUS-Graph', to: 'LCC-Graph'},
+        {from: 'HipG', to: 'Pregel'},
+        {from: 'HitGraph', to: 'CuSha'},
+        {from: 'HitGraph', to: 'GraphGen'},
+        {from: 'HitGraph', to: 'GraphMat'},
+        {from: 'HitGraph', to: 'Graphie'},
+        {from: 'HitGraph', to: 'HyVE'},
+        {from: 'HitGraph', to: 'ThunderGP'},
+        {from: 'HotGraph', to: 'GridGraph'},
+        {from: 'HyTGraph', to: 'DiGraph'},
+        {from: 'HyTGraph', to: 'Scaph'},
+        {from: 'HyTGraph', to: 'Subway'},
+        {from: 'HyVE', to: 'GraphR'},
+        {from: 'HyVE', to: 'NxGraph'},
+        {from: 'HybridGraph', to: 'GraphD'},
+        {from: 'HybridGraph', to: 'Gre'},
+        {from: 'ImmortalGraph', to: 'PowerLyra'},
+        {from: 'JanusGraph', to: 'Graph Database'},
+        {from: 'KickStarter', to: 'Chaos'},
+        {from: 'KickStarter', to: 'Graspan'},
+        {from: 'KickStarter', to: 'Tornado'},
+        {from: 'KineoGraph', to: 'Haloop'},
+        {from: 'KineoGraph', to: 'Pregel'},
+        {from: 'L-PowerGraph', to: 'GraphD'},
+        {from: 'L-PowerGraph', to: 'GraphH'},
+        {from: 'LCC-Graph', to: 'Giraph unchained'},
+        {from: 'LCC-Graph', to: 'X-Stream'},
+        {from: 'LFGGraph', to: 'Trinity'},
+        {from: 'LLAMA', to: 'Chronos'},
+        {from: 'LLAMA', to: 'TurboGraph'},
+        {from: 'LOSC', to: 'Gemini'},
+        {from: 'LOSC', to: 'LCC-Graph'},
+        {from: 'LargeGraph', to: 'DepGraph'},
+        {from: 'LazyGraph', to: 'Frog'},
+        {from: 'LazyGraph', to: 'GRAM'},
+        {from: 'LazyGraph', to: 'LLAMA'},
+        {from: 'LazyGraph', to: 'Medusa'},
+        {from: 'LazyGraph', to: 'NScale'},
+        {from: 'LazyGraph', to: 'PGX.D'},
+        {from: 'LightGraph', to: 'Ligra'},
+        {from: 'LightGraph', to: 'TurboGraph'},
+        {from: 'Ligra', to: 'Giraph'},
+        {from: 'Ligra', to: 'GraphChi'},
+        {from: 'LiveGraph', to: 'GraphOne'},
+        {from: 'LiveGraph', to: 'ImmortalGraph'},
+        {from: 'LiveGraph', to: 'Weaver'},
+        {from: 'Lumos', to: 'Garaph'},
+        {from: 'Lumos', to: 'GraphBolt'},
+        {from: 'Lumos', to: 'Graphene'},
+        {from: 'Lumos', to: 'Mosaic'},
+        {from: 'MMap', to: 'TurboGraph'},
+        {from: 'MMap', to: 'X-Stream'},
+        {from: 'Maiter', to: 'PowerGraph'},
+        {from: 'MapGraph', to: 'PowerGraph'},
+        {from: 'Medusa', to: 'GraphChi'},
+        {from: 'Mizan', to: 'HipG'},
+        {from: 'Mizan', to: 'Trinity'},
+        {from: 'MocGraph', to: 'Mizan'},
+        {from: 'MocGraph', to: 'TurboGraph'},
+        {from: 'Mosaic', to: 'G-Store'},
+        {from: 'Mosaic', to: 'GraphReduce'},
+        {from: 'MultiLogVC', to: 'WonderLand'},
+        {from: 'NGraph', to: 'GraphGrind'},
+        {from: 'NGraph', to: 'Seraph'},
+        {from: 'NPGraph', to: 'EPGraph'},
+        {from: 'NPGraph', to: 'GraphMP'},
+        {from: 'NPGraph', to: 'XPGraph'},
+        {from: 'NScale', to: 'Trinity'},
+        {from: 'Naiad', to: 'Differential Dataflow'},
+        {from: 'Naiad', to: 'GraphX'},
+        {from: 'Naiad', to: 'KineoGraph'},
+        {from: 'Neo4j', to: 'Graph Database'},
+        {from: 'NxGraph', to: 'GBASE'},
+        {from: 'NxGraph', to: 'GridGraph'},
+        {from: 'NxGraph', to: 'HipG'},
+        {from: 'NxGraph', to: 'MMap'},
+        {from: 'PGAbB', to: 'GBASE'},
+        {from: 'PGAbB', to: 'Garaph'},
+        {from: 'PGX.D', to: 'GraphLab'},
+        {from: 'PGX.D', to: 'GraphX'},
+        {from: 'PartitionedVC', to: 'GraphMP'},
+        {from: 'PartitionedVC', to: 'Lumos'},
+        {from: 'PathGraph', to: 'Medusa'},
+        {from: 'PowerGraph', to: 'GraphLab'},
+        {from: 'PowerLyra', to: 'Blogel'},
+        {
+            from: 'PowerLyra',
+            to: 'Chronos',
+            color: 'red',
+            arrows: {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}}
+        },
+        {from: 'PowerLyra', to: 'GraphBuilder'},
+        {from: 'PowerLyra', to: 'LFGGraph'},
+        {from: 'PowerLyra', to: 'Mizan'},
+        {from: 'PowerLyra', to: 'X-Stream'},
+        {
+            from: 'PrIter',
+            to: 'GraphLab',
+            color: 'red',
+            arrows: {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}}
+        },
+        {
+            from: 'PrIter',
+            to: 'iMapReduce',
+            color: 'red',
+            arrows: {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}}
+        },
+        {from: 'Pregelix', to: 'Trinity'},
+        {from: 'Quegel', to: 'Blogel'},
+        {from: 'Quegel', to: 'GraphX'},
+        {from: 'Quegel', to: 'Trinity'},
+        {from: 'Raphtory', to: 'GraphTides'},
+        {from: 'ReGraph', to: 'Gemini'},
+        {from: 'ReGraph', to: 'GoFFish'},
+        {from: 'ReGraph', to: 'HitGraph'},
+        {from: 'Ringo', to: 'TurboGraph'},
+        {from: 'RisGraph', to: 'GraphOne'},
+        {from: 'RisGraph', to: 'ImmortalGraph'},
+        {from: 'RisGraph', to: 'Lumos'},
+        {from: 'SGraph', to: 'Giraph'},
+        {from: 'SGraph', to: 'GraphBuilder'},
+        {from: 'SNAP', to: 'GraphChi'},
+        {from: 'SaGraph', to: 'EGraph'},
+        {from: 'SaGraph', to: 'ScalaGraph'},
+        {from: 'ScalaGraph', to: 'GraphABCD'},
+        {from: 'ScalaGraph', to: 'GraphPulse'},
+        {from: 'ScalaGraph', to: 'Scaph'},
+        {from: 'ScalaGraph', to: 'Subway'},
+        {from: 'ScalaGraph', to: 'ThunderGP'},
+        {from: 'ScaleG', to: 'GraphD'},
+        {from: 'ScaleG', to: 'HGraph'},
+        {from: 'ScaleG', to: 'Medusa'},
+        {from: 'ScaleG', to: 'NxGraph'},
+        {from: 'Scaph', to: 'GraphPhi'},
+        {from: 'Scaph', to: 'Lumos'},
+        {from: 'Seraph', to: 'Trinity'},
+        {from: 'ShenTu', to: 'Gemini'},
+        {from: 'ShenTu', to: 'Graphene'},
+        {from: 'ShenTu', to: 'Mosaic'},
+        {from: 'ShenTu', to: 'STINGER'},
+        {from: 'Subway', to: 'Garaph'},
+        {from: 'Subway', to: 'Graphie'},
+        {from: 'SympleGraph', to: 'Lumos'},
+        {from: 'TDGraph', to: 'DepGraph'},
+        {from: 'TIDE', to: 'GraphX'},
+        {from: 'TIDE', to: 'Trinity'},
+        {from: 'TeGraph', to: 'Auxo'},
+        {from: 'TeGraph', to: 'DynamoGraph'},
+        {from: 'TeGraph', to: 'GraphTides'},
+        {from: 'TeGraph', to: 'LiveGraph'},
+        {from: 'TeGraph', to: 'Lumos'},
+        {from: 'TeGraph+', to: 'Blaze'},
+        {from: 'TeGraph+', to: 'CommonGraph'},
+        {from: 'TeGraph+', to: 'GraphScope'},
+        {from: 'TeGraph+', to: 'Graphflow'},
+        {from: 'TeGraph+', to: 'SaGraph'},
+        {from: 'TeGraph+', to: 'TeGraph'},
+        {from: 'Tegra', to: 'GraphOne'},
+        {from: 'Tegra', to: 'GraphP'},
+        {from: 'Tegra', to: 'ImmortalGraph'},
+        {from: 'Tegra', to: 'WonderLand'},
+        {from: 'ThunderGP', to: 'Chaos'},
+        {from: 'ThunderGP', to: 'GraVF'},
+        {from: 'TigerGraph', to: 'Giraph'},
+        {from: 'TigerGraph', to: 'JanusGraph'},
+        {from: 'TigerGraph', to: 'PowerGraph'},
+        {from: 'Tigr', to: 'Giraph'},
+        {from: 'Tigr', to: 'GraphReduce'},
+        {from: 'Tornado', to: 'Aspire'},
+        {from: 'Tornado', to: 'Naiad'},
+        {from: 'Tornado', to: 'Trinity'},
+        {from: 'Trinity', to: 'Giraph'},
+        {from: 'Trinity', to: 'GraphChi'},
+        {from: 'Tripoline', to: 'Chaos'},
+        {from: 'Tripoline', to: 'Fennel'},
+        {from: 'Tripoline', to: 'GRAPE'},
+        {from: 'Tripoline', to: 'Subway'},
+        {from: 'Tripoline', to: 'Tigr'},
+        {from: 'TuGraph', to: 'JanusGraph'},
+        {from: 'TuGraph', to: 'Neo4j'},
+        {from: 'TurboGraph', to: 'Trinity'},
+        {from: 'VENUS', to: 'GasCL'},
+        {from: 'VENUS', to: 'MocGraph'},
+        {from: 'VGL', to: 'CuSha'},
+        {from: 'VGL', to: 'Ligra'},
+        {from: 'VersionTraveler', to: 'LFGGraph'},
+        {from: 'VersionTraveler', to: 'LLAMA'},
+        {from: 'VersionTraveler', to: 'MocGraph'},
+        {from: 'VersionTraveler', to: 'Ringo'},
+        {from: 'VersionTraveler', to: 'X-Stream'},
+        {from: 'Weaver', to: 'Blogel'},
+        {from: 'Weaver', to: 'GraphX'},
+        {from: 'Weaver', to: 'GridGraph'},
+        {from: 'Weaver', to: 'MocGraph'},
+        {from: 'Weaver', to: 'Pregelix'},
+        {from: 'WolfGraph', to: 'Frog'},
+        {from: 'WolfGraph', to: 'Graphie'},
+        {from: 'WolfGraph', to: 'Tigr'},
+        {from: 'WolfGraph', to: 'WonderLand'},
+        {from: 'WonderLand', to: 'G-Store'},
+        {from: 'WonderLand', to: 'Gemini'},
+        {from: 'WonderLand', to: 'KickStarter'},
+        {from: 'X-Stream', to: 'GraphChi'},
+        {from: 'XPGraph', to: 'Fennel'},
+        {from: 'XPGraph', to: 'GraphIn'},
+        {from: 'XPGraph', to: 'GraphOne'},
+        {from: 'XPGraph', to: 'Graphene'},
+        {from: 'XPGraph', to: 'LiveGraph'},
+        {from: 'XPGraph', to: 'Lumos'},
+        {from: 'XPGraph', to: 'faimGraph'},
+        {from: 'Zorro', to: 'LFGGraph'},
+        {from: 'Zorro', to: 'LLAMA'},
+        {from: 'Zorro', to: 'X-Stream'},
+        {from: 'faimGraph', to: 'GasCL'},
+        {from: 'iGraph', to: 'Blogel'},
+        {from: 'iGraph', to: 'X-Stream'},
+        {from: 'iMapReduce', to: 'Haloop'},
+        {from: 'iPregel', to: 'GraphD'},
+        {from: 'iTurboGraph', to: 'GraphD'},
+        {from: 'iTurboGraph', to: 'GraphOne'},
+    ]);
+
+    // create network
+    var container = document.getElementById('network');
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {
+        layout: {
+            hierarchical: {
+                enabled: true,
+                levelSeparation: 150,
+                nodeSpacing: 100,
+                treeSpacing: 200,
+                direction: 'RL',
+                sortMethod: 'directed',
+            }
+        },
+        physics: true,
+        nodes: {
+            shape: 'box',
+        },
+        edges: {
+            color: {
+                color: 'gray',
+                highlight: 'orange',
+                hover: 'orange',
+                inherit: true,
+                opacity: 1.0,
+            },
+            arrows: 'to',
+            smooth: false
+        },
+    };
+
+    // initialize network
+    var network = new vis.Network(container, data, options);
+
+    function activateDownstream(network, nodeId) {
+        activatedNodeIds = new Set();
+        activatedEdgeIds = new Set();
+
+        function recurse(nodeId) {
+            if (!activatedNodeIds.has(nodeId)) {
+                activatedNodeIds.add(nodeId);
+                const edgeIds = network.getConnectedEdges(nodeId);
+                const outgoingEdgeIds = edgeIds.filter(edgeId => {
+                    const edgeData = network.body.data.edges.get(edgeId);
+                    return edgeData.from === nodeId;
+                });
+                activatedEdgeIds = new Set([...activatedEdgeIds, ...outgoingEdgeIds]);
+                outgoingEdgeIds.forEach(edgeId => {
+                    const edgeData = network.body.data.edges.get(edgeId);
+                    recurse(edgeData.to);
+                });
+            }
+        }
+
+        recurse(nodeId);
+        network.selectNodes([...activatedNodeIds], true);
+        network.selectEdges([...activatedEdgeIds], true);
+    }
+
+    function getNodeLevels(startNode) {
+        let stack = [startNode];
+        let visited = new Set();
+        let levelMap = {};
+        for (let nodeId of stack) {
+            levelMap[nodeId] = 0;
+        }
+        while (stack.length > 0) {
+            let nodeId = stack.pop();
+            if (!visited.has(nodeId)) {
+                visited.add(nodeId);
+                let parentLevel = levelMap[nodeId];
+                let connectedEdges = network.getConnectedEdges(nodeId);
+                for (const edgeId of connectedEdges) {
+                    let edge = edges.get(edgeId);
+
+                    if (edge.from === nodeId && !visited.has(edge.to)) {
+                        stack.push(edge.to);
+                        levelMap[edge.to] = parentLevel + 1;
+                    }
+                }
+            }
+        }
+        return levelMap;
+    }
+
+    function search(selectedNodeId, nodeIds) {
+        if (selectedNodeId && nodeIds.length) {
+            var levelMap = getNodeLevels(selectedNodeId);
+            nodes.update(
+                {id: selectedNodeId, color: 'red', font: {color: 'white', size: 20, bold: 700}});
+            let connectedEdges = network.getConnectedEdges(selectedNodeId);
+            for (const edgeId of connectedEdges) {
+                let edge = edges.get(edgeId);
+                if (edge.from === selectedNodeId) {
+                    if (!edge.color || edge.color !== 'red') {
+                        edges.update({id: edge.id, color: 'green'});
+                    }
+                }
+            }
+            for (const nodeId in levelMap) {
+                if (levelMap[nodeId] === 1) {
+                    nodes.update(
+                        {id: nodeId, color: 'green', font: {color: 'white', size: 20, bold: 700}});
+                } else if (levelMap[nodeId] > 1) {
+                    nodes.update(
+                        {id: nodeId, color: 'orange', font: {color: 'white', size: 20, bold: 700}});
+                }
+            }
+            nodeIds.forEach(nodeId => {
+                activateDownstream(network, nodeId);
+            });
+        }
+    }
+
+    function deselectAllElements() {
+        network.unselectAll()
+        nodes.forEach(node => {
+            if (node._type && node._type == 'db') {
+                nodes.update({id: node.id, color: 'white', font: null, size: 20});
+            } else {
+                nodes.update({id: node.id, color: null, font: null, size: 20});
+            }
+        });
+        edges.forEach(edge => {
+            if (edge.color) {
+                edge.color !== 'red' && (edge.color = null)
+                edges.update({...edge});
+            }
+        });
+    }
+
+    network.on("selectNode", function (params) {
+        const nodeIds = params.nodes;
+        deselectAllElements()
+        search(params.nodes[0], nodeIds)
+    });
+    network.on('deselectNode', function (params) {
+        deselectAllElements()
+    });
+    network.on('click', function (params) {
+        if (params.nodes.length === 0 && params.edges.length === 0) {
+            deselectAllElements();
+        }
+    });
+    input.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById('searchButton').click();
+        }
+    });
+    document.getElementById('searchButton').addEventListener('click', function () {
+        deselectAllElements()
+        var searchValue = document.getElementById('searchInput').value;
+        if (!searchValue) {
+            return
+        }
+        let target = null
+        nodes.forEach((node) => {
+            if (node.id.toUpperCase() === searchValue.toUpperCase()) {
+                target = node
+            }
+        })
+        if (target) {
+            let id = target.id
+            search(id, [id])
+        } else {
+            alert(`Invalid Graph System: ${searchValue}`)
+        }
+    });
+</script>
+</body>
+
+</html>
