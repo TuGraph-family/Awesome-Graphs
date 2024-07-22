@@ -3,6 +3,7 @@
 * AeonG: [An Efficient Built-in Temporal Support in Graph Databases (Extended Version)](../papers/AeonG.pdf)
 * AsynGraph: [Maximizing Data Parallelism for Efficient Iterative Graph Processing on GPUs](../papers/AsynGraph.pdf)
 * Auxo: [A Temporal Graph Management System](../papers/Auxo.pdf)
+* BG3: [A Cost Effective and I/O Efficient Graph Database in ByteDance](../papers/BG3.pdf)
 * Blaze: [Fast Graph Processing on Fast SSDs](../papers/Blaze.pdf)
 * BlitzG: Exploiting high-bandwidth networks for fast graph processing
 * Blogel: [A Block-Centric Framework for Distributed Computation on Real-World Graphs](../papers/Blogel.pdf)

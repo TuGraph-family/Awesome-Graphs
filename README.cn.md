@@ -4,7 +4,7 @@
 
 > 以图的方式思考图计算。
 
-![](docs/images/awesome-graphs.jpg)
+![](docs/images/awesome-graphs.png)
 
 
 ## 简介
@@ -32,10 +32,8 @@
 ## 代码贡献
 
 * 项目只依赖前端组件[vis.js](https://visjs.org/)，要对图谱数据进行调整，只需要修改`index.html`文件中`nodes`和`edges`的定义。
-* 新增图计算系统论文节点，如`{id: 'Pregel', label: 'Pregel'},`。
-* 新增图计算系统论文/产品引用，如`{from: 'GeaFlow', to: 'TuGraph'},`。
-* 新增图计算系统产品节点只需要标记`_type`属性为`db`即可，如`{id: 'TuGraph', label: 'TuGraph', color: 'white', _type: 'db'},`。
-* 双向引用需添加一条边，并标记为红色双向箭头格式。如`{from:'GraphChi',to:'PowerGraph',color:'red',arrows:{to:{enabled:true,scaleFactor:1},from:{enabled:true,scaleFactor:1}}},`表示`GraphChi`和`PowerGraph`存在互相引用（同时发表于OSDI-2012）。
+* 新增图计算系统论文节点，如`{id: 'Pregel', label: 'Pregel'},`。产品节点只需要标记`_type`属性为`db`即可，如`{id: 'TuGraph', label: 'TuGraph', color: 'white', _type: 'db'},`。
+* 新增图计算系统论文/产品引用，如`{from: 'GeaFlow', to: 'TuGraph'},`。双向引用需要标记为红色双向箭头格式。如`{from:'GraphChi',to:'PowerGraph',color:'red',arrows:{to:{enabled:true,scaleFactor:1},from:{enabled:true,scaleFactor:1}}},`表示`GraphChi`和`PowerGraph`存在互相引用（同时发表于OSDI-2012）。
 * 新增论文统一放到`papers/<图系统名>.pdf`路径，并按字母序修改`docs/graph-system-list.md`的引用链接。
 * 受人工整理限制，数据中难免出现错误和遗漏，欢迎大家一起贡献勘误和未录入的论文和产品信息。
 
