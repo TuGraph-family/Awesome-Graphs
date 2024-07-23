@@ -142,7 +142,6 @@
 * MapGraph: [A High Level API for Fast Development of High Performance Graph Analytics on GPUs](../papers/MapGraph.pdf)
 * Medusa: [Simplified Graph Processing on GPUs](../papers/Medusa.pdf)
 * Mizan: [A System for Dynamic Load Balancing in Large-scale Graph Processing](../papers/Mizan.pdf)
-* MMap: [Fast billion-scale graph computation on a pc via memory mapping](../papers/MMap.pdf)
 * MultiLogVC: [Efficient Out-of-Core Graph Processing Framework for Flash Storage](../papers/MultiLogVC.pdf)
 * NGraph: [Parallel Graph Processing in Hybrid Memory Systems](../papers/NGraph.pdf)
 * NPGraph: An Efficient Graph Computing Model in NUMA-Based Persistent Memory Systems
