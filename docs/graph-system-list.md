@@ -5,22 +5,22 @@
 * Auxo: [A Temporal Graph Management System](../papers/Auxo.pdf)
 * BG3: [A Cost Effective and I/O Efficient Graph Database in ByteDance](../papers/BG3.pdf)
 * Blaze: [Fast Graph Processing on Fast SSDs](../papers/Blaze.pdf)
-* BlitzG: Exploiting high-bandwidth networks for fast graph processing
+* BlitzG: [Exploiting high-bandwidth networks for fast graph processing](../papers/BlitzG.pdf)
 * Blogel: [A Block-Centric Framework for Distributed Computation on Real-World Graphs](../papers/Blogel.pdf)
 * ByteGraph: [A High-Performance Distributed Graph Database in ByteDance](../papers/ByteGraph.pdf)
 * CGgraph: [An Ultra-fast Graph Processing System on Modern Commodity CPU-GPU Co-processor](../papers/CGgraph.pdf)
 * CGraph: [A correlations-aware approach for efficient concurrent iterative graph processing](../papers/CGraph.pdf)
 * CLIP: [A Disk I/O Focused Parallel Out-of-core Graph Processing System](../papers/CLIP.pdf)
-* CSMqGraph: Coarse-Grained and Multi-external-storage Multi-queue I/O Management for Graph Computing
+* CSMqGraph: [Coarse-Grained and Multi-external-storage Multi-queue I/O Management for Graph Computing](../papers/CSMqGraph.pdf)
 * Chaos: [Scale-out Graph Processing from Secondary Storage](../papers/Chaos.pdf)
-* Chronograph: A Distributed Processing Platform for Online and Batch Computations on Event-sourced Graphs
+* Chronograph: [A Distributed Processing Platform for Online and Batch Computations on Event-sourced Graphs](../papers/Chronograph.pdf)
 * Chronos: [A Graph Engine for Temporal Graph Analysis](../papers/Chronos.pdf)
 * CoRAL: [Confined Recovery in Distributed Asynchronous Graph Processing](../papers/CoRAL.pdf)
 * CommonGraph: [Graph Analytics on Evolving Data](../papers/CommonGraph.pdf)
 * CuSha: [Vertex-Centric Graph Processing on GPUs](../papers/CuSha.pdf)
 * Cymbalo: [An Efficient Graph Processing Framework for Machine Learning](../papers/Cymbalo.pdf)
 * D2Graph: An Efficient and Unified Out-of-Core Graph Computing Model
-* DD-Graph: A Highly Cost-Effective Distributed Disk-based Graph-Processing Framework
+* DD-Graph: [A Highly Cost-Effective Distributed Disk-based Graph-Processing Framework](../papers/DD-Graph.pdf)
 * DFOGraph: [An I/O- and Communication-Efficient System for Distributed Fully-out-of-Core Graph Processing](../papers/DFOGraph.pdf)
 * DZiG: [Sparsity-Aware Incremental Processing of Streaming Graphs](../papers/DZiG.pdf)
 * DepGraph: [A Dependency-Driven Accelerator for Efficient Iterative Graph Processing](../papers/DepGraph.pdf)
@@ -30,8 +30,8 @@
 * DiterGraph: [Toward I/O-Efficient Incremental Computation over Large Graphs with Billion Edges](../papers/DiterGraph.pdf)
 * DynamoGraph: [A Distributed System for Large-scale, Temporal Graph Processing, its Implementation and First Observations](../papers/DynamoGraph.pdf)
 * EGraph: Efficient concurrent GPU-based dynamic graph processing
-* EPGraph: An Efficient Graph Computing Model in Persistent Memory System
-* EmptyHeaded: A Relational Engine for Graph Processing
+* EPGraph: [An Efficient Graph Computing Model in Persistent Memory System](../papers/EPGraph.pdf)
+* EmptyHeaded: [A Relational Engine for Graph Processing](../papers/EmptyHeaded.pdf)
 * FBSGraph: [Accelerating Asynchronous Graph Processing via Forward and Backward Sweeping](../papers/FBSGraph.pdf)
 * FENNEL: [Streaming Graph Partitioning for Massive Scale Graphs](../papers/FENNEL.pdf)
 * Fargraph+: Excavating the parallelism of graph processing workload on RDMA-based far memory system
@@ -54,7 +54,7 @@
 * GasCL: [A Vertex-Centric Graph Model for GPUs](../papers/GasCL.pdf)
 * GeaFlow: [A Graph Extended and Accelerated Dataflow System](../papers/GeaFlow.pdf)
 * Gemini: [A Computation-Centric Distributed Graph Processing System](../papers/Gemini.pdf)
-* Giraph Unchained: Barrierless Asynchronous Parallel Execution in Pregel-like Graph Processing Systems(../papers/Giraph Unchained.pdf)
+* Giraph Unchained: [Barrierless Asynchronous Parallel Execution in Pregel-like Graph Processing Systems](../papers/Giraph Unchained.pdf)
 * [Giraph](http://giraph.apache.org)
 * GoFFish: [A Sub-graph Centric Framework for Large-Scale Graph Analytics](../papers/GoFFish.pdf)
 * GraPU: [Accelerate Streaming Graph Analysis through Preprocessing Buffered Updates](../papers/GraPU.pdf)
@@ -62,7 +62,7 @@
 * Gradoop: [Analyzing Temporal Graphs with Gradoop](../papers/Gradoop.pdf)
 * GrapH: [Traffic-Aware Graph Processing](../papers/GrapH.pdf)
 * Graph3S: [A Simple, Speedy and Scalable Distributed Graph Processing System](../papers/Graph3S.pdf)
-* GraphA:[An efficient ReRAM-based architecture to accelerate large scale graph processing
+* GraphA: An efficient ReRAM-based architecture to accelerate large scale graph processing
 * GraphABCD: [Scaling Out Graph Analytics with Asynchronous Block Coordinate Descent](../papers/GraphABCD.pdf)
 * GraphBolt: [Dependency-Driven Synchronous Processing of Streaming Graphs](../papers/GraphBolt.pdf)
 * GraphBuilder: [Scalable Graph ETL Framework](../papers/GraphBuilder.pdf)
@@ -71,7 +71,7 @@
 * GraphChi: [Large-Scale Graph Computation on Just a PC](../papers/GraphChi.pdf)
 * GraphD: [Distributed Vertex-Centric Graph Processing Beyond the Memory Limit](../papers/GraphD.pdf)
 * GraphDuo: [A Dual-Model Graph Processing Framework](../papers/GraphDuo.pdf)
-* GraphFly: Efficient Asynchronous Streaming Graphs Processing via Dependency-Flow
+* GraphFly: [Efficient Asynchronous Streaming Graphs Processing via Dependency-Flow](../papers/GraphFly.pdf)
 * GraphGen: [An FPGA Framework for Vertex-Centric Graph Computation](../papers/GraphGen.pdf)
 * GraphGrind: [addressing load imbalance of graph partitioning](../papers/GraphGrind.pdf)
 * GraphH(1): [High Performance Big Graph Analytics in Small Clusters](../papers/GraphH(1).pdf)
@@ -93,25 +93,25 @@
 * GraphQ: [Graph Query Processing with Abstraction Refinement](../papers/GraphQ.pdf)
 * GraphR: [Accelerating Graph Processing Using ReRAM](../papers/GraphR.pdf)
 * GraphReduce: [Processing Large-Scale Graphs on Accelerator-Based Systems](../papers/GraphReduce.pdf)
-* GraphSD: A State and Dependency aware Out-of-Core Graph Processing System
+* GraphSD: [A State and Dependency aware Out-of-Core Graph Processing System](../papers/GraphSD.pdf)
 * GraphScSh: [Efficient I/O Scheduling and Graph Sharing for Concurrent Graph Processing](../papers/GraphScSh.pdf)
 * GraphScope: [A Unified Engine For Big Graph Processing](../papers/GraphScope.pdf)
 * GraphTides: [A Framework for Evaluating Stream-based Graph Processing Platforms](../papers/GraphTides.pdf)
-* GraphTune: An Efficient Dependency-Aware Substrate to Alleviate Irregularity in Concurrent Graph Processing
+* GraphTinker: [A High Performance Data Structure for Dynamic Graph Processing](../papers/GraphTinker.pdf)
+* GraphTune: [An Efficient Dependency-Aware Substrate to Alleviate Irregularity in Concurrent Graph Processing](../papers/GraphTune.pdf)
 * GraphTwist: [Fast Iterative Graph Computation with Two-tier Optimizations](../papers/GraphTwist.pdf)
 * GraphX: [A Resilient Distributed Graph System on Spark](../papers/GraphX.pdf)
-* GraphZ: Improving the Performance of Large-Scale Graph Analytics on Small-Scale Machines
+* GraphZ: [Improving the Performance of Large-Scale Graph Analytics on Small-Scale Machines](../papers/GraphZ.pdf)
 * Graphene: [Fine-Grained IO Management for Graph Computing](../papers/Graphene.pdf)
 * Graphflow: [An Active Graph Database](../papers/Graphflow.pdf)
 * Graphie: [Large-Scale Asynchronous Graph Traversals on Just a GPU](../papers/Graphie.pdf)
-* GraphTinker: A High Performance Data Structure for Dynamic Graph Processing
 * Graspan: [A Single-machine Disk-based Graph System for Interprocedural Static Analyses of Large-scale Systems Code](../papers/Graspan.pdf)
 * Grasper: [A High Performance Distributed System for OLAP on Property Graphs](../papers/Grasper.pdf)
 * GridGraph: [Large-Scale Graph Processing on a Single Machine Using 2-Level Hierarchical Partitioning](../papers/GridGraph.pdf)
 * Groute: [Asynchronous Multi-GPU Programming Model with Applications to Large-scale Graph Processing](../papers/Groute.pdf)
 * HGraph: [I/O-efficient Distributed and Iterative Graph Computing by Hybrid Pushing/Pulling](../papers/HGraph.pdf)
 * HPGraph: A High Parallel Graph Processing System Based on Flash Array
-* HUS-Graph: I/O-Efficient Out-of-Core Graph Processing with Hybrid Update Strategy
+* HUS-Graph: [I/O-Efficient Out-of-Core Graph Processing with Hybrid Update Strategy](../papers/HUS-Graph.pdf)
 * HaLoop: [Efficient Iterative Data Processing on Large Clusters](../papers/HaLoop.pdf)
 * HipG: [Parallel Processing of Large-Scale Graphs](../papers/HipG.pdf)
 * HitGraph: [High-throughput Graph Processing Framework on FPGA](../papers/HitGraph.pdf)
@@ -125,10 +125,10 @@
 * KickStarter: [Fast and Accurate Computations on Streaming Graphs via Trimmed Approximations](../papers/KickStarter.pdf)
 * Kineograph: [Taking the Pulse of a Fast-Changing and Connected World](../papers/Kineograph.pdf)
 * L-PowerGraph: [a lightweight distributed graph-parallel communication mechanism](../papers/L-PowerGraph.pdf)
-* LCC-Graph: A high-performance graph-processing framework with low communication costs
+* LCC-Graph: [A High-Performance Graph-Processing Framework with Low Communication Costs](../papers/LCC-Graph.pdf)
 * LFGraph: [Simple and Fast Distributed Graph Analytics](../papers/LFGraph.pdf)
 * LLAMA: [Efficient Graph Analytics Using Large Multiversioned Arrays.](../papers/LLAMA.pdf)
-* LOSC: Efficient Out-of-Core Graph Processing with Locality-optimized Subgraph Construction
+* LOSC: [Efficient Out-of-Core Graph Processing with Locality-optimized Subgraph Construction](../papers/LOSC.pdf)
 * LSGraph: [A Locality-centric High-performance Streaming Graph Engine](../papers/LSGraph.pdf)
 * LargeGraph: [An Efficient Dependency-Aware GPU-Accelerated Large-Scale Graph Processing](../papers/LargeGraph.pdf)
 * LazyGraph: [Lazy Data Coherency for Replicas in Distributed Graph-Parallel Computation](../papers/LazyGraph.pdf)
@@ -166,8 +166,8 @@
 * RisGraph: [A Real-Time Streaming System for Evolving Graphs to Support Sub-millisecond Per-update Analysis at Millions Ops/s](../papers/RisGraph.pdf)
 * SGraph: A Distributed Streaming System for Processing Big Graphs
 * STINGER: [High Performance Data Structure for Streaming Graphs](../papers/STINGER.pdf)
-* SaGraph: A Similarity-aware Hardware Accelerator for Temporal Graph Processing
-* ScalaGraph: A Scalable Accelerator for Massively Parallel Graph Processing
+* SaGraph: [A Similarity-aware Hardware Accelerator for Temporal Graph Processing](../papers/SaGraph.pdf)
+* ScalaGraph: [A Scalable Accelerator for Massively Parallel Graph Processing](../papers/ScalaGraph.pdf)
 * ScaleG: [A Distributed Disk-based System for Vertex-centric Graph Processing](../papers/ScaleG.pdf)
 * Scaph: [Scalable GPU-Accelerated Graph Processing with Value-Driven Differential Scheduling](../papers/Scaph.pdf)
 * Seraph: [an Efficient, Low-cost System for Concurrent Graph Processing](../papers/Seraph.pdf)
@@ -176,10 +176,10 @@
 * SympleGraph: [Distributed Graph Processing with Precise Loop-Carried Dependency Guarantee](../papers/SympleGraph.pdf)
 * TDGraph: [A Topology-Driven Accelerator for High-Performance Streaming Graph Processing](../papers/TDGraph.pdf)
 * TIDE: [Dynamic Interaction Graphs with Probabilistic Edge Decay](../papers/TIDE.pdf)
-* TeGraph+: Scalable Temporal Graph Processing Enabling Flexible Edge Modifications
+* TeGraph+: [Scalable Temporal Graph Processing Enabling Flexible Edge Modifications](../papers/TeGraph+.pdf)
 * TeGraph: [A Novel General-Purpose Temporal Graph Computing Engine](../papers/TeGraph.pdf)
 * Tegra: [Efficient Ad-Hoc Analytics on Evolving Graphs](../papers/Tegra.pdf)
-* ThunderGP: HLS-based graph processing framework on FPGAs
+* ThunderGP: [HLS-based graph processing framework on FPGAs](../papers/ThunderGP.pdf)
 * [TigerGraph](https://www.tigergraph.com): [A Native MPP Graph Database](../papers/TigerGraph.pdf)
 * Tigr: [Transforming Irregular Graphs for GPU-Friendly Graph Processing](../papers/Tigr.pdf)
 * Tornado: [A System For Real-Time Iterative Analysis Over Evolving Data](../papers/Tornado.pdf)
