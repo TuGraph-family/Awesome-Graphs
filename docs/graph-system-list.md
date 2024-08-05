@@ -138,6 +138,7 @@
 * Lumos: [Dependency-Driven Disk-based Graph Processing](../papers/Lumos.pdf)
 * MMap: [Fast Billion-Scale Graph Computation on a PC via Memory Mapping](../papers/MMap.pdf)
 * MOCgraph: [Scalable Distributed Graph Processing Using Message Online Computing](../papers/MOCgraph.pdf)
+* MOSAIC: [Processing a Trillion-Edge Graph on a Single Machine](../papers/MOSAIC.pdf)
 * Maiter: [An Asynchronous Graph Processing Framework for Delta-based Accumulative Iterative Computation](../papers/Maiter.pdf)
 * MapGraph: [A High Level API for Fast Development of High Performance Graph Analytics on GPUs](../papers/MapGraph.pdf)
 * Medusa: [Simplified Graph Processing on GPUs](../papers/Medusa.pdf)

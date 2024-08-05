@@ -32,8 +32,12 @@
 ## 代码贡献
 
 * 项目只依赖前端组件[vis.js](https://visjs.org/)，要对图谱数据进行调整，只需要修改`index.html`文件中`nodes`和`edges`的定义。
-* 新增图计算系统论文节点，如`{id: 'Pregel', label: 'Pregel'},`。产品节点只需要标记`_type`属性为`db`即可，如`{id: 'TuGraph', label: 'TuGraph', color: 'white', _type: 'db'},`。
-* 新增图计算系统论文/产品引用，如`{from: 'GeaFlow', to: 'TuGraph'},`。双向引用需要标记为红色双向箭头格式。如`{from:'GraphChi',to:'PowerGraph',color:'red',arrows:{to:{enabled:true,scaleFactor:1},from:{enabled:true,scaleFactor:1}}},`表示`GraphChi`和`PowerGraph`存在互相引用（同时发表于OSDI-2012）。
+* 新增图计算系统论文节点，如`{id: 'Pregel', label: 'Pregel'},`。
+  - 论文节点使用`_paper`属性指定论文标题，如`{id: 'GeaFlow', _paper: 'GeaFlow: A Graph Extended and Accelerated Dataflow System'},`。
+  - 论文/产品可以使用`_website`属性指定关联网址，如`{id: 'TuGraph', _website: 'https://tugraph.tech'},`。
+  - 产品节点只需要标记`_type`属性为`db`即可，如`{id: 'TuGraph', color: 'white', _type: 'db'},`，并使用白色背景。
+* 新增图计算系统论文/产品引用，如`{from: 'GeaFlow', to: 'TuGraph'},`。
+  - 双向引用需要标记为红色双向箭头格式。如`{from:'GraphChi',to:'PowerGraph',color:'red',arrows:{to:{enabled:true,scaleFactor:1},from:{enabled:true,scaleFactor:1}}},`表示`GraphChi`和`PowerGraph`存在互相引用（同时发表于OSDI-2012）。
 * 新增论文统一放到`papers/<图系统名>.pdf`路径，并按字母序修改`docs/graph-system-list.md`的引用链接。
 * 受人工整理限制，数据中难免出现错误和遗漏，欢迎大家一起贡献勘误和未录入的论文和产品信息。
 
