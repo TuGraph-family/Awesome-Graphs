@@ -840,7 +840,7 @@
         };
         nodes.forEach(node => {
             node.label = node.id;
-            if (node._type == 'db') {
+            if (node._type === 'db') {
                 node.color = 'white';
             }
         })
@@ -1021,7 +1021,6 @@
         }
         function getNeighbours() {
             let connectedEdges = network.getConnectedEdges(selectedNodeId);
-            let activatedNodeIds = new Set()
             let activatedEdgeIds = new Set()
             nodes.update(
                 { id: selectedNodeId, color: 'red', font: { color: 'white', size: 20, bold: 700 } })
