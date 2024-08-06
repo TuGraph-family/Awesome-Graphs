@@ -5,9 +5,18 @@
     <title>Awesome-Graphs</title>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
         #network {
             width: 100%;
-            height: 1200px;
+            height: 100%;
         }
 
         ul,
@@ -76,8 +85,8 @@
         }
 
         #context-menu ul li:last-child {
-            margin-bottom: 0px;
-            border-bottom-width: 0px;
+            margin-bottom: 0;
+            border-bottom-width: 0;
         }
 
         #context-menu ul li:hover {
@@ -882,9 +891,11 @@
         var network = new vis.Network(container, data, options);
 
         var selectedNodeId = null
+
         function activateDownstream(network, nodeId, direction) {
             activatedNodeIds = new Set();
             activatedEdgeIds = new Set();
+
             function recurse(nodeId) {
                 if (!activatedNodeIds.has(nodeId)) {
                     activatedNodeIds.add(nodeId);
@@ -927,6 +938,7 @@
 
                 }
             }
+
             recurse(nodeId);
             console.log(activatedNodeIds)
             network.selectNodes([...activatedNodeIds], true);
@@ -980,7 +992,6 @@
                 }
             }
 
-            console.log(levelMap);
             return levelMap;
         }
 
@@ -989,7 +1000,8 @@
             if (selectedNodeId && nodeIds.length) {
                 var levelMap = getNodeLevels(selectedNodeId, direction);
                 nodes.update(
-                    { id: selectedNodeId, color: 'red', font: { color: 'white', size: 20, bold: 700 } });
+                    {id: selectedNodeId, color: 'red', font: {color: 'white', size: 20, bold: 700}}
+                );
                 let connectedEdges = network.getConnectedEdges(selectedNodeId);
                 nodeIds.forEach(nodeId => {
                     activateDownstream(network, nodeId, direction);
@@ -998,42 +1010,49 @@
                     let edge = edges.get(edgeId);
                     if (direction === 'to' && edge.to === selectedNodeId) {
                         if (!edge._bidirectional) {
-                            edges.update({ id: edge.id, color: 'green' });
+                            edges.update({id: edge.id, color: 'green'});
                         }
                     }
                     if (direction === 'from' && edge.from === selectedNodeId) {
                         if (!edge._bidirectional) {
-                            edges.update({ id: edge.id, color: 'green' });
+                            edges.update({id: edge.id, color: 'green'});
                         }
                     }
                 }
                 for (const nodeId in levelMap) {
                     if (levelMap[nodeId] === 1) {
                         nodes.update(
-                            { id: nodeId, color: 'green', font: { color: 'white', size: 20, bold: 700 } });
+                            {id: nodeId, color: 'green', font: {color: 'white', size: 20, bold: 700}}
+                        );
                     } else if (levelMap[nodeId] > 1) {
                         nodes.update(
-                            { id: nodeId, color: 'orange', font: { color: 'white', size: 20, bold: 700 } });
+                            {id: nodeId, color: 'orange', font: {color: 'white', size: 20, bold: 700}}
+                        );
                     }
                 }
 
             }
         }
+
         function getNeighbours() {
             let connectedEdges = network.getConnectedEdges(selectedNodeId);
             let activatedEdgeIds = new Set()
             nodes.update(
-                { id: selectedNodeId, color: 'red', font: { color: 'white', size: 20, bold: 700 } })
+                {id: selectedNodeId, color: 'red', font: {color: 'white', size: 20, bold: 700}}
+            );
             for (const edgeId of connectedEdges) {
                 activatedEdgeIds.add(edgeId)
                 let edge = edges.get(edgeId)
                 edge.to === selectedNodeId && nodes.update(
-                    { id: edge.from, color: 'green', font: { color: 'white', size: 20, bold: 700 } })
+                    {id: edge.from, color: 'green', font: {color: 'white', size: 20, bold: 700}}
+                );
                 edge.from === selectedNodeId && nodes.update(
-                    { id: edge.to, color: 'green', font: { color: 'white', size: 20, bold: 700 } })
+                    {id: edge.to, color: 'green', font: {color: 'white', size: 20, bold: 700}}
+                );
             }
             network.selectEdges([...activatedEdgeIds], true);
         }
+
         function deselectAllElements() {
             network.unselectAll()
             const nodeDetail = document.getElementById('node-detail');
@@ -1044,17 +1063,18 @@
                 contextMenu.style.display = 'none';
             }
             nodes.forEach(node => {
-                if (node._type && node._type == 'db') {
-                    nodes.update({ id: node.id, color: 'white', font: null, size: 20 });
+                if (node._type && node._type === 'db') {
+                    nodes.update({id: node.id, color: 'white', font: null, size: 20});
                 } else {
-                    nodes.update({ id: node.id, color: null, font: null, size: 20 });
+                    nodes.update({id: node.id, color: null, font: null, size: 20});
                 }
             });
             edges.forEach(edge => {
                 edge._bidirectional ? edge.color = 'red' : edge.color = null
-                edges.update({ ...edge });
+                edges.update({...edge});
             });
         }
+
         function updateDetailContent(nodeId) {
             const nodeDetail = document.getElementById('node-detail');
 
@@ -1063,7 +1083,7 @@
             }
             let target = null
             nodes.forEach(node => {
-                if (node.id == nodeId) {
+                if (node.id === nodeId) {
                     target = node
                 }
             })
@@ -1088,7 +1108,7 @@
                     const div = document.createElement('div');
                     const title = document.createElement('b');
                     const link = document.createElement('a');
-                    title.innerText='Website: ';
+                    title.innerText = 'Website: ';
                     link.href = target._website;
                     link.textContent = target._website
                     link.target = '_blank'
@@ -1098,6 +1118,7 @@
                 }
             }
         }
+
         network.on("selectNode", function (params) {
             isNodeSelected = true;
             const nodeIds = params.nodes;
@@ -1106,7 +1127,7 @@
             updateDetailContent(params.nodes[0]);
             setTimeout(() => isNodeSelected = false, 100);
         });
-        network.on('deselectNode', function (params) {
+        network.on('deselectNode', function () {
             deselectAllElements()
         });
         network.on('click', function (params) {
