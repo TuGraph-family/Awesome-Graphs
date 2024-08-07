@@ -25,8 +25,8 @@
 * DZiG: [Sparsity-Aware Incremental Processing of Streaming Graphs](../papers/DZiG.pdf)
 * DepGraph: [A Dependency-Driven Accelerator for Efficient Iterative Graph Processing](../papers/DepGraph.pdf)
 * DiGraph: [An Efficient Path-based Iterative Directed Graph Processing System on Multiple GPUs](../papers/DiGraph.pdf)
-* Differential dataflow: [Differential dataflow](../papers/Differential dataflow.pdf)
-* Distributed GraphLab: [A Framework for Machine Learning and Data Mining in the Cloud](../papers/Distributed GraphLab.pdf)
+* Differential dataflow: [Differential dataflow](../papers/Differential%20dataflow.pdf)
+* Distributed GraphLab: [A Framework for Machine Learning and Data Mining in the Cloud](../papers/Distributed%20GraphLab.pdf)
 * DiterGraph: [Toward I/O-Efficient Incremental Computation over Large Graphs with Billion Edges](../papers/DiterGraph.pdf)
 * DynamoGraph: [A Distributed System for Large-scale, Temporal Graph Processing, its Implementation and First Observations](../papers/DynamoGraph.pdf)
 * EGraph: Efficient concurrent GPU-based dynamic graph processing
@@ -54,7 +54,7 @@
 * GasCL: [A Vertex-Centric Graph Model for GPUs](../papers/GasCL.pdf)
 * GeaFlow: [A Graph Extended and Accelerated Dataflow System](../papers/GeaFlow.pdf)
 * Gemini: [A Computation-Centric Distributed Graph Processing System](../papers/Gemini.pdf)
-* Giraph Unchained: [Barrierless Asynchronous Parallel Execution in Pregel-like Graph Processing Systems](../papers/Giraph Unchained.pdf)
+* Giraph Unchained: [Barrierless Asynchronous Parallel Execution in Pregel-like Graph Processing Systems](../papers/Giraph%20Unchained.pdf)
 * [Giraph](http://giraph.apache.org)
 * GoFFish: [A Sub-graph Centric Framework for Large-Scale Graph Analytics](../papers/GoFFish.pdf)
 * GraPU: [Accelerate Streaming Graph Analysis through Preprocessing Buffered Updates](../papers/GraPU.pdf)
@@ -191,7 +191,7 @@
 * VENUS: [A System for Streamlined Graph Computation on a Single PC](../papers/VENUS.pdf)
 * VGL: a high-performance graph processing framework for the NEC SX-Aurora TSUBASA vector architecture
 * VeilGraph: [Approximating Graph Streams](../papers/VeilGraph.pdf)
-* Version Traveler: [Fast and Memory-Efficient Version Switching in Graph Processing Systems](../papers/Version Traveler.pdf)
+* Version Traveler: [Fast and Memory-Efficient Version Switching in Graph Processing Systems](../papers/Version%20Traveler.pdf)
 * Weaver: [A High-Performance, Transactional Graph Database Based on Refinable Timestamps](../papers/Weaver.pdf)
 * WolfGraph: [the Edge-Centric graph processing on GPU](../papers/WolfGraph.pdf)
 * Wonderland: [A Novel Abstraction-Based Out-Of-Core Graph Processing System](../papers/Wonderland.pdf)
