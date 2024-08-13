@@ -13,16 +13,17 @@
 
 ## Quick Start
 
-Download and access the `index.html` file in your browser.
+1. Directly visit our [GitHub Pages](https://tugraph-family.github.io/Awesome-Graphs/).
+2. Download and access `index.html` file in browser.
 
 ## Features
 
 * Includes existing graph system papers/products, depicting their citation relationships in a graph.
 * Perform citation chain analysis by searching/clicking on graph computation system node and distinguish between direct, indirect, and bidirectional citation relationships.
-* Drag graph computation system node to view reference and citation relationships.
-* Includes some graph computation system products, all mounted to the root node `Graph Database`.
+* Support upstream and downstream tracing and view direct neighbors by right-click.
 * View the original paper or product websites of graph computation systems.
-* Support upstream and downstream tracing and view direct neighbors.
+* Includes some graph computation system products, all mounted to the root node `Graph Database`.
+
 
 ## System List
 
