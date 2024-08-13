@@ -37,6 +37,7 @@
         font-size: 14px;
         box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
+        background-color: #fff;
       }
 
       #searchInput,
@@ -1639,10 +1640,14 @@
           this.bindEvents();
         }
 
-        appendDetailContent = (target) => {
+        disposeDetailContent = () => {
           while (this.nodeDetail.firstChild) {
             this.nodeDetail.removeChild(this.nodeDetail.firstChild);
           }
+        };
+
+        appendDetailContent = (target) => {
+          this.disposeDetailContent();
 
           if (!target) return;
 
@@ -1760,7 +1765,7 @@
         onCanvasClick = async (event) => {
           await this.clearState();
 
-          this.nodeDetail.style.display = "none";
+          this.disposeDetailContent();
         };
 
         bindEvents() {
@@ -1860,6 +1865,60 @@
         return datum._type === "db" ? blues : greens;
       };
 
+      const toolbarOption = {
+        type: "toolbar",
+        position: "bottom-left",
+        onClick: (item) => {
+          if (item === "zoom-in") graph.zoomBy(1.2);
+          if (item === "zoom-out") graph.zoomBy(0.8);
+          if (item === "auto-fit") graph.fitView();
+        },
+        getItems: () => {
+          return [
+            { id: "zoom-in", value: "zoom-in" },
+            { id: "zoom-out", value: "zoom-out" },
+            { id: "auto-fit", value: "auto-fit" },
+          ];
+        },
+      };
+
+      const contextmenuOption = {
+        type: "contextmenu",
+        trigger: "contextmenu",
+        onClick: (v, element, target) => {
+          if (v === "reference-network") {
+            graph.emit("node:click", {
+              target,
+              targetType: "node",
+              direction: "out",
+            });
+          }
+          if (v === "citation-network") {
+            graph.emit("node:click", {
+              target,
+              targetType: "node",
+              direction: "in",
+            });
+          }
+          if (v === "direct-neighbors") {
+            graph.emit("node:click", {
+              target,
+              targetType: "node",
+              onlyNeighbors: true,
+            });
+          }
+          graph.fitView();
+        },
+        getItems: () => {
+          return [
+            { name: "Reference Network", value: "reference-network" },
+            { name: "Citation Network", value: "citation-network" },
+            { name: "Direct Neighbors", value: "direct-neighbors" },
+          ];
+        },
+        enable: (e) => e.targetType === "node",
+      };
+
       const graph = new G6.Graph({
         container: "network",
         data: transformData({ nodes, edges }),
@@ -1930,78 +1989,7 @@
           "zoom-canvas",
           "click-element",
         ],
-        plugins: [
-          {
-            type: "toolbar",
-            position: "bottom-left",
-            onClick: (item) => {
-              if (item === "zoom-in") graph.zoomBy(1.2);
-              if (item === "zoom-out") graph.zoomBy(0.8);
-              if (item === "auto-fit") graph.fitView();
-            },
-            getItems: () => {
-              return [
-                { id: "zoom-in", value: "zoom-in" },
-                { id: "zoom-out", value: "zoom-out" },
-                { id: "auto-fit", value: "auto-fit" },
-              ];
-            },
-          },
-          {
-            type: "contextmenu",
-            trigger: "contextmenu",
-            onClick: (v, element, target) => {
-              if (v === "reference-network") {
-                graph.emit("node:click", {
-                  target,
-                  targetType: "node",
-                  direction: "out",
-                });
-              }
-              if (v === "citation-network") {
-                graph.emit("node:click", {
-                  target,
-                  targetType: "node",
-                  direction: "in",
-                });
-              }
-              if (v === "direct-neighbors") {
-                graph.emit("node:click", {
-                  target,
-                  targetType: "node",
-                  onlyNeighbors: true,
-                });
-              }
-              graph.fitView();
-            },
-            getItems: () => {
-              return [
-                { name: "Reference Network", value: "reference-network" },
-                { name: "Citation Network", value: "citation-network" },
-                { name: "Direct Neighbors", value: "direct-neighbors" },
-              ];
-            },
-            enable: (e) => e.targetType === "node",
-          },
-          // {
-          //   type: "tooltip",
-          //   getContent: (e, items) => {
-          //     const { id, _paper, _website } = items[0];
-          //     let res = "";
-          //     if (_paper) {
-          //       const linkHref = `${baseUrl}${id}.pdf`;
-          //       res += `<div>Related Paper: <a href=${linkHref} target="_blank">${_paper}</a></div>`;
-          //     }
-          //     if (_website) {
-          //       res += `<div>Website: <a href=${_website} target="_blank">${_website}</a></div>`;
-          //     }
-          //     return res;
-          //   },
-          //   enable: (e) => ["node", "canvas"].includes(e.targetType),
-          //   enterable: true,
-          //   position: "right",
-          // },
-        ],
+        plugins: [toolbarOption, contextmenuOption],
       });
 
       window.addEventListener("load", () => {
