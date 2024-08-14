@@ -31,7 +31,7 @@ All graph system papers/products are provided [**HERE**](docs/graph-system-list.
 
 ## Contributing
 
-* The project only relies on the front-end component [vis.js](https://visjs.org/). To adjust the graph data, simply modify the definitions of `nodes` and `edges` in the `index.html` file.
+* The project only relies on the front-end component [AntV/G6](https://github.com/antvis/g6). To adjust the graph data, simply modify the definitions of `nodes` and `edges` in the `index.html` file.
 * To add a new graph system paper node, for example, `{id: 'Pregel'},`.
   - Set `_paper` attribute as paper's title, for example, `{id: 'GeaFlow', _paper: 'GeaFlow: A Graph Extended and Accelerated Dataflow System'},`.
   - Set `_website` as relevant website, for example, `{id: 'TuGraph', _website: 'https://tugraph.tech'},`.

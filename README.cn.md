@@ -32,7 +32,7 @@
 
 ## 代码贡献
 
-* 项目只依赖前端组件[vis.js](https://visjs.org/)，要对图谱数据进行调整，只需要修改`index.html`文件中`nodes`和`edges`的定义。
+* 项目只依赖前端组件[AntV/G6](https://github.com/antvis/g6)，要对图谱数据进行调整，只需要修改`index.html`文件中`nodes`和`edges`的定义。
 * 新增图计算系统论文节点，如`{id: 'Pregel'},`。
   - 使用`_paper`属性指定论文标题，如`{id: 'GeaFlow', _paper: 'GeaFlow: A Graph Extended and Accelerated Dataflow System'},`。
   - 使用`_website`属性指定关联网址，如`{id: 'TuGraph', _website: 'https://tugraph.tech'},`。
