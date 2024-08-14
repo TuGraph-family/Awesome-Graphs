@@ -106,6 +106,7 @@
 
     <script type="module">
       const BASE_URL = 'https://github.com/TuGraph-family/Awesome-Graphs/blob/master/papers/';
+      const BG_COLOR = '#FFF';
       const PAPER_NODE_COLOR = '#1783FF';
       const DB_NODE_COLOR = '#17C76F';
       const UNI_EDGE_COLOR = '#CCC';
@@ -1195,6 +1196,7 @@
         animation: false,
         autoFit: 'view',
         padding: [0, 20, 0, 60],
+        background: BG_COLOR,
         node: {
           style: {
             fill: (datum) => (datum._type === 'db' ? DB_NODE_COLOR : PAPER_NODE_COLOR),
