@@ -1,124 +1,121 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Awesome-Graphs</title>
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/a/font_470089_8hnbbf8n4u8.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
 
-        #network {
-            width: 100%;
-            height: 100%;
-        }
+      #network {
+        width: 100%;
+        height: 100%;
+      }
 
-        ul,
-        li,
-        ol {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
+      .search-bar {
+        position: absolute;
+        top: 24px;
+        left: 12px;
+        z-index: 2;
+        width: 320px;
+        font-size: 14px;
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        background-color: #fff;
+      }
 
-        #node-detail {
-            display: none;
-            left: 50%;
-            width: max-content;
-            top: 50px;
-            transform: translateX(-50%);
-            position: absolute;
-            border: 0;
-            border-radius: 5px;
-            background-color: transparent;
-            padding: 10px;
-            z-index: 1000;
-            text-align: center;
-        }
+      #searchInput,
+      #searchButton {
+        font-size: 14px;
+      }
 
+      .form-control:focus {
+        border-color: var(--bs-btn-border-color);
+        box-shadow: none;
+      }
 
-        input {
-            width: 200px;
-            height: 40px;
-            line-height: 40px;
-            font-size: 16px;
-            border: 1px solid #CCC;
-            border-radius: 5px 0 0 5px;
-            padding-left: 10px;
-        }
+      .alert-message {
+        font-size: 14px;
+        width: 320px;
+        height: fit-content;
+        top: 72px;
+        left: 12px;
+        line-height: 24px;
+        padding: 6px 0px 6px 12px;
+        position: absolute;
+      }
 
-        button {
-            width: 80px;
-            height: 44px;
-            line-height: 44px;
-            position: relative;
-            top: 1px;
-            left: -6px;
-            border-radius: 0 5px 5px 0;
-            border: 1px solid #CCC;
-            cursor: pointer;
-        }
+      .alert-dismissible .btn-close {
+        padding: 14px;
+        font-size: 10px;
+      }
 
-        #context-menu {
-            display: none;
-            position: absolute;
-            background-color: #e2e3e4;
-            z-index: 1000;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
+      .btn-close:focus {
+        box-shadow: none;
+      }
 
-        #context-menu ul li {
-            font-size: 14px;
-            line-height: 26px;
-            cursor: pointer;
-            background-color: #e2e3e4;
-            margin-bottom: 2px;
-            border-bottom: 1px solid #cacbcc;
-            padding: 0 30px 0 0;
-        }
+      #node-detail {
+        left: 50%;
+        width: max-content;
+        top: 20px;
+        transform: translateX(-50%);
+        position: absolute;
+        border: 0;
+        border-radius: 5px;
+        background-color: transparent;
+        padding: 10px;
+        z-index: 1000;
+        text-align: center;
+      }
 
-        #context-menu ul li:last-child {
-            margin-bottom: 0;
-            border-bottom-width: 0;
-        }
+      .g6-toolbar {
+        background: #fff;
+        border-radius: 8px !important;
+        bottom: 50% !important;
+        flex-direction: column !important;
+        gap: 4px;
+        left: 12px !important;
+        opacity: 1 !important;
+        padding: 4px !important;
+      }
 
-        #context-menu ul li:hover {
-            background-color: #bbb;
-        }
-
+      .g6-toolbar-item {
+        display: flex !important;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div style="position: absolute; top: 30px;left: 30px;z-index: 2;">
-        <input type="text" id="searchInput" placeholder="Graph System Name">
-        <button id="searchButton">Search</button>
+  <body>
+    <div class="input-group mb-3 search-bar">
+      <input type="text" id="searchInput" class="form-control" placeholder="Graph System Name" aria-describedby="searchButton" />
+      <button id="searchButton" class="btn btn-outline-secondary" type="button">Search</button>
     </div>
-    <div id="network"></div>
+    <div id="live-alert"></div>
     <div id="node-detail"></div>
-    <div id="context-menu">
-        <ul>
-            <li id="reference-network">Reference Network</li>
-            <li id="citation-network">Citation Network</li>
-            <li id="direct-neighbours">Direct Neighbours</li>
-        </ul>
-    </div>
-    <script type="text/javascript">
-        var direction = 'from'
-        var baseUrl = 'https://github.com/TuGraph-family/Awesome-Graphs/blob/master/papers/'
-        var input = document.getElementById('searchInput');
-        var contextMenu = document.getElementById('context-menu');
-        let isNodeSelected = false;
+    <div id="network"></div>
 
-        // create nodes
-        var nodes = new vis.DataSet([
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@antv/g6@5/dist/g6.min.js"></script>
+
+    <script type="module">
+      const BASE_URL = 'https://github.com/TuGraph-family/Awesome-Graphs/blob/master/papers/';
+      const BG_COLOR = '#FFF';
+      const PAPER_NODE_COLOR = '#1783FF';
+      const DB_NODE_COLOR = '#17C76F';
+      const UNI_EDGE_COLOR = '#CCC';
+      const BI_EDGE_COLOR = '#D94801';
+      // Assign color to nodes on the reference link: root, first degree, and others
+      const PALETTE = ['#1783FF', '#00C9C9', '#F08F56'];
+
+      // create nodes
+      const nodes = [
             {id: 'A1', _paper: 'A1: A Distributed In-Memory Graph Database'},
             {id: 'ASPIRE', _paper: 'ASPIRE: Exploiting Asynchronous Parallelism in Iterative Algorithms using a Relaxed Consistency based DSM'},
             {id: 'AeonG', _paper: 'AeonG: An Efficient Built-in Temporal Support in Graph Databases (Extended Version)'},
@@ -326,10 +323,10 @@
             {id: 'iPregel', _paper: 'iPregel: A Combiner-Based In-Memory Shared Memory Vertex-Centric Framework'},
             {id: 'iTurboGraph', _paper: 'iTurboGraph: Scaling and Automating Incremental Graph Analytics'},
             {id: 'xDGP', _paper: 'xDGP: A Dynamic Graph Processing System with Adaptive Partitioning'},
-        ]);
+      ];
 
-        // create edges
-        var edges = new vis.DataSet([
+      // create edges
+      const edges = [
             {from: 'A1', to: 'Trinity'},
             {from: 'ASPIRE', to: 'Ligra'},
             {from: 'AeonG', to: 'Auxo'},
@@ -839,361 +836,415 @@
             {from: 'iTurboGraph', to: 'GraphD'},
             {from: 'iTurboGraph', to: 'GraphOne'},
             {from: 'xDGP', to: 'Mizan'},
-        ]);
+      ];
 
-        // create network
-        var container = document.getElementById('network');
-        var data = {
-            nodes: nodes,
-            edges: edges
-        };
-        nodes.forEach(node => {
-            node.label = node.id;
-            if (node._type === 'db') {
-                node.color = 'white';
+      const idOf = G6.idOf;
+
+      const transformData = (data) => {
+        data.edges.forEach((edge) => {
+          edge.source = edge.from;
+          edge.target = edge.to;
+        });
+        return data;
+      };
+
+      const getLevelMap = (nodeId, direction) => {
+        const stack = [nodeId];
+        const visited = new Set();
+        const levelMap = { [nodeId]: 0 };
+
+        const processEdge = (source, target, parentLevel) => {
+          if (!visited.has(target)) {
+            const newLevel = parentLevel + 1;
+            if (!levelMap[target] || newLevel < levelMap[target]) {
+              levelMap[target] = newLevel;
+              stack.push(target);
             }
-        })
-        edges.forEach(edge => {
-            if (edge._bidirectional) {
-                edge.color = 'red';
-                edge.arrows = {to: {enabled: true, scaleFactor: 1}, from: {enabled: true, scaleFactor: 1}};
-            }
-        })
-        var options = {
-            layout: {
-                hierarchical: {
-                    enabled: true,
-                    levelSeparation: 150,
-                    nodeSpacing: 100,
-                    treeSpacing: 200,
-                    direction: 'RL',
-                    sortMethod: 'directed',
-                }
-            },
-            physics: true,
-            nodes: {
-                shape: 'box',
-            },
-            edges: {
-                color: {
-                    color: 'gray',
-                    highlight: 'orange',
-                    hover: 'orange',
-                    inherit: true,
-                    opacity: 1.0,
-                },
-                arrows: 'to',
-                smooth: false
-            },
+          }
         };
 
-        // initialize network
-        var network = new vis.Network(container, data, options);
-
-        var selectedNodeId = null
-
-        function activateDownstream(network, nodeId, direction) {
-            activatedNodeIds = new Set();
-            activatedEdgeIds = new Set();
-
-            function recurse(nodeId) {
-                if (!activatedNodeIds.has(nodeId)) {
-                    activatedNodeIds.add(nodeId);
-                    const edgeIds = network.getConnectedEdges(nodeId);
-                    if (direction === 'from') {
-                        const outgoingEdgeIds = edgeIds.filter(edgeId => {
-                            const edgeData = network.body.data.edges.get(edgeId);
-                            if (edgeData.from === nodeId || edgeData._bidirectional) {
-                                return edgeId
-                            }
-                        });
-                        activatedEdgeIds = new Set([...activatedEdgeIds, ...outgoingEdgeIds]);
-                        outgoingEdgeIds.forEach(edgeId => {
-                            const edgeData = network.body.data.edges.get(edgeId);
-                            if (edgeData._bidirectional) {
-                                recurse(edgeData.from)
-                                recurse(edgeData.to)
-                            } else {
-                                recurse(edgeData.to);
-                            }
-                        });
-                    } else if (direction === 'to') {
-                        const ingoingEdgeIds = edgeIds.filter(edgeId => {
-                            const edgeData = network.body.data.edges.get(edgeId);
-                            if (edgeData.to === nodeId || edgeData._bidirectional) {
-                                return edgeId
-                            }
-                        });
-                        activatedEdgeIds = new Set([...activatedEdgeIds, ...ingoingEdgeIds]);
-                        ingoingEdgeIds.forEach(edgeId => {
-                            const edgeData = network.body.data.edges.get(edgeId);
-                            if (edgeData._bidirectional) {
-                                recurse(edgeData.from)
-                                recurse(edgeData.to)
-                            } else {
-                                recurse(edgeData.from);
-                            }
-                        });
-                    }
-
+        while (stack.length > 0) {
+          const id = stack.pop();
+          if (!visited.has(id)) {
+            visited.add(id);
+            const parentLevel = levelMap[id];
+            const relatedEdges = graph.getRelatedEdgesData(id);
+            relatedEdges.forEach((edge) => {
+              if (direction === 'out') {
+                if (edge.source === id) {
+                  processEdge(edge.source, edge.target, parentLevel);
+                } else if (edge._bidirectional) {
+                  processEdge(edge.target, edge.source, parentLevel);
                 }
-            }
-
-            recurse(nodeId);
-            console.log(activatedNodeIds)
-            network.selectNodes([...activatedNodeIds], true);
-            network.selectEdges([...activatedEdgeIds], true);
-        }
-
-        function getNodeLevels(startNode, direction) {
-            let stack = [startNode];
-            let visited = new Set();
-            let levelMap = {};
-            levelMap[startNode] = 0;
-
-            while (stack.length > 0) {
-                let nodeId = stack.pop();
-                if (!visited.has(nodeId)) {
-                    visited.add(nodeId);
-                    let parentLevel = levelMap[nodeId];
-                    let connectedEdges = network.getConnectedEdges(nodeId);
-                    for (const edgeId of connectedEdges) {
-                        let edge = edges.get(edgeId);
-                        if (direction == 'from') {
-                            if (edge.from === nodeId && !visited.has(edge.to)) {
-                                let newLevel = parentLevel + 1;
-                                if (levelMap[edge.to] === undefined || newLevel < levelMap[edge.to]) {
-                                    levelMap[edge.to] = newLevel;
-                                    stack.push(edge.to);
-                                }
-                            } else if (edge._bidirectional && !visited.has(edge.from)) {
-                                let newLevel = parentLevel + 1;
-                                if (levelMap[edge.from] === undefined || newLevel < levelMap[edge.from]) {
-                                    levelMap[edge.from] = newLevel;
-                                    stack.push(edge.from);
-                                }
-                            }
-                        } else if (direction == 'to') {
-                            if (edge.to === nodeId && !visited.has(edge.from)) {
-                                let newLevel = parentLevel + 1;
-                                if (levelMap[edge.from] === undefined || newLevel < levelMap[edge.from]) {
-                                    levelMap[edge.from] = newLevel;
-                                    stack.push(edge.from);
-                                }
-                            } else if (edge._bidirectional && !visited.has(edge.to)) {
-                                let newLevel = parentLevel + 1;
-                                if (levelMap[edge.to] === undefined || newLevel < levelMap[edge.to]) {
-                                    levelMap[edge.to] = newLevel;
-                                    stack.push(edge.to);
-                                }
-                            }
-                        }
-                    }
+              } else if (direction === 'in') {
+                if (edge.target === id) {
+                  processEdge(edge.target, edge.source, parentLevel);
+                } else if (edge._bidirectional) {
+                  processEdge(edge.source, edge.target, parentLevel);
                 }
-            }
-
-            return levelMap;
-        }
-
-
-        function search(selectedNodeId, nodeIds, direction) {
-            if (selectedNodeId && nodeIds.length) {
-                var levelMap = getNodeLevels(selectedNodeId, direction);
-                nodes.update(
-                    {id: selectedNodeId, color: 'red', font: {color: 'white', size: 20, bold: 700}}
-                );
-                let connectedEdges = network.getConnectedEdges(selectedNodeId);
-                nodeIds.forEach(nodeId => {
-                    activateDownstream(network, nodeId, direction);
-                });
-                for (const edgeId of connectedEdges) {
-                    let edge = edges.get(edgeId);
-                    if (direction === 'to' && edge.to === selectedNodeId) {
-                        if (!edge._bidirectional) {
-                            edges.update({id: edge.id, color: 'green'});
-                        }
-                    }
-                    if (direction === 'from' && edge.from === selectedNodeId) {
-                        if (!edge._bidirectional) {
-                            edges.update({id: edge.id, color: 'green'});
-                        }
-                    }
-                }
-                for (const nodeId in levelMap) {
-                    if (levelMap[nodeId] === 1) {
-                        nodes.update(
-                            {id: nodeId, color: 'green', font: {color: 'white', size: 20, bold: 700}}
-                        );
-                    } else if (levelMap[nodeId] > 1) {
-                        nodes.update(
-                            {id: nodeId, color: 'orange', font: {color: 'white', size: 20, bold: 700}}
-                        );
-                    }
-                }
-
-            }
-        }
-
-        function getNeighbours() {
-            let connectedEdges = network.getConnectedEdges(selectedNodeId);
-            let activatedEdgeIds = new Set()
-            nodes.update(
-                {id: selectedNodeId, color: 'red', font: {color: 'white', size: 20, bold: 700}}
-            );
-            for (const edgeId of connectedEdges) {
-                activatedEdgeIds.add(edgeId)
-                let edge = edges.get(edgeId)
-                edge.to === selectedNodeId && nodes.update(
-                    {id: edge.from, color: 'green', font: {color: 'white', size: 20, bold: 700}}
-                );
-                edge.from === selectedNodeId && nodes.update(
-                    {id: edge.to, color: 'green', font: {color: 'white', size: 20, bold: 700}}
-                );
-            }
-            network.selectEdges([...activatedEdgeIds], true);
-        }
-
-        function deselectAllElements() {
-            network.unselectAll()
-            const nodeDetail = document.getElementById('node-detail');
-            if (event && event.target !== nodeDetail && !nodeDetail.contains(event.target)) {
-                nodeDetail.style.display = 'none';
-            }
-            if (event && event.target !== contextMenu && !contextMenu.contains(event.target)) {
-                contextMenu.style.display = 'none';
-            }
-            nodes.forEach(node => {
-                if (node._type && node._type === 'db') {
-                    nodes.update({id: node.id, color: 'white', font: null, size: 20});
-                } else {
-                    nodes.update({id: node.id, color: null, font: null, size: 20});
-                }
+              }
             });
-            edges.forEach(edge => {
-                edge._bidirectional ? edge.color = 'red' : edge.color = null
-                edges.update({...edge});
+          }
+        }
+
+        return levelMap;
+      };
+
+      const removeElement = (element) => {
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+      };
+
+      class ClickElement extends G6.BaseBehavior {
+        constructor(context, options) {
+          super(context, options);
+          this.bindEvents();
+        }
+
+        async clearState() {
+          const { graph } = this.context;
+          const { nodes, edges } = graph.getData();
+          const states = [];
+          [...nodes, ...edges].forEach((datum) => {
+            states[idOf(datum)] = [];
+          });
+          await graph.setElementState(states, false);
+        }
+
+        onNodeClick = async (event) => {
+          await this.clearState();
+
+          const { direction = 'out', onlyNeighbors } = event;
+          const nodeId = event.target.id;
+          const { graph } = this.context;
+          const { nodes, edges } = graph.getData();
+
+          let relatedIds;
+
+          if (onlyNeighbors) {
+            const neighborNodes = graph.getNeighborNodesData(nodeId);
+            const neighborEdges = graph.getRelatedEdgesData(nodeId);
+            const oneLevelIds = [...neighborNodes, ...neighborEdges].map(idOf);
+            relatedIds = [...oneLevelIds, nodeId];
+
+            graph.updateNodeData((prev) => prev.filter((node) => relatedIds.includes(node.id) && (node.style.level = oneLevelIds.includes(node.id) ? 1 : 0)));
+
+            const states = {};
+            [...nodes, ...edges].forEach((datum) => {
+              states[idOf(datum)] = relatedIds.includes(idOf(datum)) ? ['link'] : ['inactive'];
             });
-        }
+            await graph.setElementState(states);
+          } else {
+            const levels = getLevelMap(nodeId, direction);
+            relatedIds = Object.keys(levels);
 
-        function updateDetailContent(nodeId) {
-            const nodeDetail = document.getElementById('node-detail');
+            graph.updateNodeData((prev) => prev.filter((node) => relatedIds.includes(node.id) && (node.style.level = levels[node.id])));
+            graph.updateEdgeData((prev) => prev.filter((edge) => (levels[edge.source] || levels[edge.target]) && (edge.style.level = Math.min(levels[edge.source], levels[edge.target]))));
 
-            while (nodeDetail.firstChild) {
-                nodeDetail.removeChild(nodeDetail.firstChild);
-            }
-            let target = null
-            nodes.forEach(node => {
-                if (node.id === nodeId) {
-                    target = node
-                }
-            })
-            if (target) {
-                if (target._paper) {
-                    nodeDetail.style.display = 'block';
-                    const h3 = document.createElement('h3');
-                    const link = document.createElement('a');
-                    link.href = `${baseUrl}${target.id}.pdf`;
-                    link.textContent = target._paper
-                    link.target = '_blank'
-                    if (!target._paper.startsWith(target.id)) {
-                        const title = document.createElement('b');
-                        title.innerText = target.id + ": ";
-                        h3.appendChild(title);
-                    }
-                    h3.appendChild(link);
-                    nodeDetail.appendChild(h3);
-                }
-                if (target._website) {
-                    nodeDetail.style.display = 'block';
-                    const div = document.createElement('div');
-                    const title = document.createElement('b');
-                    const link = document.createElement('a');
-                    title.innerText = 'Website: ';
-                    link.href = target._website;
-                    link.textContent = target._website
-                    link.target = '_blank'
-                    div.appendChild(title);
-                    div.appendChild(link);
-                    nodeDetail.appendChild(div);
-                }
-            }
-        }
-
-        network.on("selectNode", function (params) {
-            isNodeSelected = true;
-            const nodeIds = params.nodes;
-            deselectAllElements();
-            search(params.nodes[0], nodeIds, direction);
-            updateDetailContent(params.nodes[0]);
-            setTimeout(() => isNodeSelected = false, 100);
-        });
-        network.on('deselectNode', function () {
-            deselectAllElements()
-        });
-        network.on('click', function (params) {
-            if (isNodeSelected) {
-                return;
-            }
-            if (params.nodes.length === 0 && params.edges.length === 0) {
-                deselectAllElements();
-            }
-        });
-        input.addEventListener('keyup', function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                document.getElementById('searchButton').click();
-            }
-        });
-        document.getElementById('searchButton').addEventListener('click', function () {
-            deselectAllElements()
-            var searchValue = document.getElementById('searchInput').value;
-            if (!searchValue) {
-                return
-            }
-            let target = null
+            const states = {};
             nodes.forEach((node) => {
-                if (node.id.toUpperCase() === searchValue.toUpperCase()) {
-                    target = node
-                }
-            })
-            if (target) {
-                let id = target.id
-                search(id, [id], direction)
-                updateDetailContent(id);
-            } else {
-                alert(`Invalid Graph System: ${searchValue}`)
-            }
-        });
-        network.on("oncontext", function (params) {
-            params.event.preventDefault();
-            deselectAllElements()
-            const nodeIds = network.getNodeAt(params.pointer.DOM);
-            if (nodeIds) {
-                selectedNodeId = nodeIds;
-                contextMenu.style.display = 'block';
-                contextMenu.style.left = params.pointer.DOM.x + 'px';
-                contextMenu.style.top = params.pointer.DOM.y + 'px';
-                updateDetailContent(selectedNodeId);
-            } else {
-                contextMenu.style.display = 'none';
-            }
-        });
-        document.getElementById('context-menu').addEventListener('click', function (event) {
-            const target = event.target;
-            switch (target.id) {
-                case 'reference-network':
-                    search(selectedNodeId, [selectedNodeId], 'from');
-                    break;
-                case 'citation-network':
-                    search(selectedNodeId, [selectedNodeId], 'to');
-                    break;
-                case 'direct-neighbours':
-                    getNeighbours(selectedNodeId);
-                    break;
-            }
-            contextMenu.style.display = 'none';
-        });
-    </script>
-</body>
+              states[node.id] = relatedIds.includes(node.id) ? ['link'] : ['inactive'];
+            });
+            edges.forEach((edge) => {
+              states[idOf(edge)] = relatedIds.includes(edge.source) && relatedIds.includes(edge.target) ? ['link'] : ['inactive'];
+            });
+            await graph.setElementState(states);
+          }
+        };
 
+        onCanvasClick = async (event) => {
+          await this.clearState();
+        };
+
+        bindEvents() {
+          const { graph } = this.context;
+          graph.on('node:click', this.onNodeClick);
+          graph.on('canvas:click', this.onCanvasClick);
+        }
+
+        unbindEvents() {
+          const { graph } = this.context;
+          graph.off('node:click', this.onNodeClick);
+          graph.off('canvas:click', this.onCanvasClick);
+        }
+
+        destroy() {
+          this.unbindEvents();
+          super.destroy();
+        }
+      }
+
+      class HierarchicalLayout extends G6.BaseLayout {
+        async execute(data) {
+          const { gap = 10, ranksep = 30, nodeSize } = this.options;
+          const layersObject = {};
+          const nodes = data.nodes.map((node) => ({ id: node.id, style: { ...node.style } }));
+          const extraGroup = [];
+          nodes.sort((a, b) => a.style.x - a.style.x);
+          nodes.forEach((node) => {
+            const isSourceNode = data.edges.some((edge) => edge.source === node.id || (edge._bidirectional && edge.target === node.id));
+            if (!isSourceNode) {
+              extraGroup.push(node);
+            } else {
+              if (!(node.style.x in layersObject)) layersObject[node.style.x] = [];
+              layersObject[node.style.x].push(node);
+            }
+          });
+          const minKey = Math.min(...Object.keys(layersObject).map(Number)) - ranksep - 2 * (typeof nodeSize === 'function' ? nodeSize(nodes[0]) : nodeSize);
+          layersObject[minKey] = extraGroup.map((node) => {
+            node.style.x = minKey;
+            return node;
+          });
+          const layers = Object.values(layersObject);
+          const maxLayer = Math.max(...layers.map((layer) => layer.length));
+          layers.forEach((layer, i) => {
+            layer.forEach((node, j) => {
+              const offset = (maxLayer - layer.length) / 2;
+              node.style.y = (offset + j) * ((typeof nodeSize === 'function' ? nodeSize(node) : nodeSize) + gap) - gap;
+            });
+          });
+          return { nodes };
+        }
+      }
+
+      class SearchBar extends G6.BasePlugin {
+        liveAlert = document.getElementById('live-alert');
+        searchInput = document.getElementById('searchInput');
+        searchButton = document.getElementById('searchButton');
+
+        constructor(context, options) {
+          super(context, options);
+          this.bindEvents();
+        }
+
+        appendAlert = (message, type) => {
+          removeElement(this.liveAlert);
+
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible alert-message" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>',
+          ].join('');
+          this.liveAlert.append(wrapper);
+        };
+
+        handleInputKeyup = (event) => {
+          const { graph } = this.context;
+          removeElement(this.liveAlert);
+
+          if (event.keyCode === 13) {
+            event.preventDefault();
+            this.searchButton.click();
+          } else if (this.searchInput.value === '') {
+            graph.emit('canvas:click', { targetType: 'canvas' });
+          }
+        };
+
+        handleButtonClick = async () => {
+          const { graph } = this.context;
+          const searchValue = this.searchInput.value;
+          if (!searchValue) return;
+
+          const target = nodes.find((node) => {
+            const regex = new RegExp(searchValue, 'i'); // fuzzy search
+            return regex.test(node.id);
+          });
+          if (target) {
+            graph.emit('node:click', { target, targetType: 'node', direction: 'out' });
+            await graph.fitView();
+          } else {
+            this.appendAlert('No results found for "' + searchValue + '"', 'warning');
+            graph.emit('canvas:click', { targetType: 'canvas' });
+          }
+        };
+
+        bindEvents() {
+          this.searchInput.addEventListener('keyup', this.handleInputKeyup);
+          this.searchButton.addEventListener('click', this.handleButtonClick);
+        }
+
+        unbindEvents() {
+          this.searchInput.removeEventListener('keyup', this.handleInputKeyup);
+          this.searchButton.removeEventListener('click', this.handleButtonClick);
+        }
+
+        destroy() {
+          this.unbindEvents();
+          super.destroy();
+        }
+      }
+
+      class DetailContent extends G6.BasePlugin {
+        nodeDetail = document.getElementById('node-detail');
+
+        constructor(context, options) {
+          super(context, options);
+          this.bindEvents();
+        }
+
+        appendDetailContent = (node) => {
+          removeElement(this.nodeDetail);
+
+          if (!node) return;
+
+          const createLinkElement = (href, text, prefix, fontSize = 16) => {
+            const wrapper = document.createElement('div');
+            wrapper.style.fontSize = `${fontSize}px`;
+            wrapper.innerHTML = [prefix ? `<b>${prefix}: </b>` : '', `<a href="${href}" target="_blank">${text}</a>`].join('');
+            return wrapper;
+          };
+
+          if (node._paper) {
+            const prefix = node._paper.startsWith(node.id) ? null : node.id;
+            const linkElement = createLinkElement(`${BASE_URL}${node.id}.pdf`, node._paper, prefix);
+            this.nodeDetail.appendChild(linkElement);
+          }
+
+          if (node._website) {
+            const linkElement = createLinkElement(node._website, node._website, 'Website', 14);
+            this.nodeDetail.appendChild(linkElement);
+          }
+        };
+
+        onNodeClick = (event) => {
+          const { target } = event;
+          const { graph } = this.context;
+          const data = graph.getNodeData(target.id);
+          this.appendDetailContent(data);
+        };
+
+        onCanvasClick = () => {
+          removeElement(this.nodeDetail);
+        };
+
+        bindEvents() {
+          const { graph } = this.context;
+          graph.on('node:click', this.onNodeClick);
+          graph.on('canvas:click', this.onCanvasClick);
+        }
+
+        unbindEvents() {
+          const { graph } = this.context;
+          graph.off('node:click', this.onNodeClick);
+          graph.off('canvas:click', this.onCanvasClick);
+        }
+
+        destroy() {
+          this.unbindEvents();
+          super.destroy();
+        }
+      }
+
+      G6.register('behavior', 'click-element', ClickElement);
+      G6.register('layout', 'hierarchical', HierarchicalLayout);
+      G6.register('plugin', 'search-bar', SearchBar);
+      G6.register('plugin', 'detail-content', DetailContent);
+
+      const toolbarOption = {
+        type: 'toolbar',
+        position: 'bottom-left',
+        onClick: (item) => {
+          if (item === 'zoom-in') graph.zoomBy(1.2);
+          if (item === 'zoom-out') graph.zoomBy(0.8);
+          if (item === 'auto-fit') graph.fitView();
+        },
+        getItems: () => {
+          return [
+            { id: 'zoom-in', value: 'zoom-in' },
+            { id: 'zoom-out', value: 'zoom-out' },
+            { id: 'auto-fit', value: 'auto-fit' },
+          ];
+        },
+      };
+
+      const contextmenuOption = {
+        type: 'contextmenu',
+        trigger: 'contextmenu',
+        onClick: (v, element, target) => {
+          if (v === 'reference-network') {
+            graph.emit('node:click', { target, targetType: 'node', direction: 'out' });
+          }
+          if (v === 'citation-network') {
+            graph.emit('node:click', { target, targetType: 'node', direction: 'in' });
+          }
+          if (v === 'direct-neighbors') {
+            graph.emit('node:click', { target, targetType: 'node', onlyNeighbors: true });
+          }
+          graph.fitView();
+        },
+        getItems: () => {
+          return [
+            { name: 'Reference Network', value: 'reference-network' },
+            { name: 'Citation Network', value: 'citation-network' },
+            { name: 'Direct Neighbors', value: 'direct-neighbors' },
+          ];
+        },
+        enable: (e) => e.targetType === 'node',
+      };
+
+      const colorOf = (datum, PALETTE) => {
+        const order = (datum.style.level > 2 ? 2 : datum.style.level) || 0;
+        return PALETTE[order];
+      };
+
+      const graph = new G6.Graph({
+        container: 'network',
+        data: transformData({ nodes, edges }),
+        animation: false,
+        autoFit: 'view',
+        padding: [0, 20, 0, 60],
+        background: BG_COLOR,
+        node: {
+          style: {
+            fill: (datum) => (datum._type === 'db' ? DB_NODE_COLOR : PAPER_NODE_COLOR),
+            iconFontFamily: 'iconfont',
+            iconText: (datum) => (datum._type === 'db' ? '\ue6ab' : '\ue7b0'),
+            labelBackground: true,
+            labelText: (datum) => datum.id,
+          },
+          state: {
+            inactive: { fill: '#ccc', iconOpacity: 0, labelBackground: false },
+            link: {
+              fill: (datum) => colorOf(datum, PALETTE),
+              halo: (datum) => datum.style.level === 0,
+              labelFontWeight: 'bold',
+            },
+          },
+        },
+        edge: {
+          style: {
+            opacity: 1,
+            strokeOpacity: 1,
+            stroke: (datum) => (datum._bidirectional ? BI_EDGE_COLOR : UNI_EDGE_COLOR),
+            startArrow: (datum) => datum._bidirectional,
+            endArrow: true,
+          },
+          state: {
+            inactive: { opacity: 0, strokeOpacity: 0 },
+            link: {
+              stroke: (datum) => colorOf(datum, PALETTE),
+              lineWidth: 2,
+              halo: false,
+            },
+          },
+        },
+        layout: [
+          { type: 'antv-dagre', rankdir: 'RL', ranksep: 40 },
+          { type: 'hierarchical', gap: 25 },
+        ],
+        behaviors: ['drag-element', 'drag-canvas', 'zoom-canvas', 'click-element'],
+        plugins: [toolbarOption, contextmenuOption, 'search-bar', 'detail-content'],
+      });
+
+      await document.fonts.ready;
+      await graph.render();
+
+      setTimeout(() => {
+        graph.render();
+      }, 16);
+    </script>
+  </body>
 </html>
