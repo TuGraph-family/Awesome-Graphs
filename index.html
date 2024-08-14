@@ -50,6 +50,7 @@
         line-height: 24px;
         padding: 6px 0px 6px 12px;
         position: absolute;
+        z-index: 1;
       }
 
       .alert-dismissible .btn-close {
@@ -1048,10 +1049,9 @@
           const searchValue = this.searchInput.value;
           if (!searchValue) return;
 
-          const target = nodes.find((node) => {
-            const regex = new RegExp(searchValue, 'i'); // fuzzy search
-            return regex.test(node.id);
-          });
+          const target =
+            nodes.find((node) => node.id.toUpperCase() === searchValue.toUpperCase()) || nodes.find((node) => new RegExp(`^${searchValue}`, 'i').test(node.id)) || nodes.find((node) => new RegExp(searchValue, 'i').test(node.id));
+
           if (target) {
             graph.emit('node:click', { target, targetType: 'node', direction: 'out' });
             await graph.fitView();
