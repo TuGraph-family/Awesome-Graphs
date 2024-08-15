@@ -1053,6 +1053,7 @@
         liveAlert = document.getElementById('live-alert');
         searchInput = document.getElementById('searchInput');
         searchButton = document.getElementById('searchButton');
+        target;
 
         constructor(context, options) {
           super(context, options);
@@ -1076,9 +1077,31 @@
           const { graph } = this.context;
           removeElement(this.liveAlert);
 
-          const filtered = fuzzy.filter(this.searchInput.value, nodes, { pre: '<b style="color: #1783FF;">', post: '</b>', extract: (el) => el.id });
+          const PRE = '<b style="color: #1783FF;">';
+          const POST = '</b>';
+          const filtered = fuzzy.filter(this.searchInput.value, nodes, { pre: PRE, post: POST, extract: (el) => el.id });
+          const sorted = filtered.sort((a, b) => {
+            // More matches first
+            const regx = new RegExp(PRE, 'g');
+            const aCount = (a.string.match(regx) || []).length;
+            const bCount = (b.string.match(regx) || []).length;
+            if (aCount !== bCount) return aCount - bCount;
 
-          document.getElementById('search-list-content').innerHTML = filtered.map((el) => `<div class="mb-1">${el.string}</div>`).join('');
+            // If the same number of matches, consecutive matches first
+            const regx_2 = new RegExp(POST + PRE, 'g');
+            const aSubCount = (a.string.match(regx_2) || []).length;
+            const bSubCount = (b.string.match(regx_2) || []).length;
+            if (aSubCount !== bSubCount) return bSubCount - aSubCount;
+
+            // If the same number of consecutive matches, earlier match position first
+            const aIndex = a.string.indexOf(PRE);
+            const bIndex = b.string.indexOf(PRE);
+            if (aIndex === -1) return 1;
+            if (bIndex === -1) return -1;
+            return aIndex - bIndex;
+          });
+          document.getElementById('search-list-content').innerHTML = sorted.map((el) => `<div class="mb-1">${el.string}</div>`).join('');
+          this.target = sorted[0]?.original.id || '';
           toggleListVisibility(true);
 
           if (event.keyCode === 13) {
@@ -1094,13 +1117,12 @@
           const searchValue = this.searchInput.value;
           if (!searchValue) return;
 
-          const filtered = fuzzy.filter(searchValue, nodes, { extract: (el) => el.id });
-          if (!filtered.length) {
+          if (!this.target) {
             this.appendAlert('No results found for "' + searchValue + '"', 'warning');
             graph.emit('canvas:click', { targetType: 'canvas' });
           }
 
-          graph.emit('node:click', { target: graph.getNodeData(filtered[0].string), targetType: 'node', direction: 'out' });
+          graph.emit('node:click', { target: graph.getNodeData(this.target), targetType: 'node', direction: 'out' });
           await graph.fitView();
         };
 
