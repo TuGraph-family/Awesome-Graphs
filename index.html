@@ -36,6 +36,20 @@
         font-size: 14px;
       }
 
+      #search-list {
+        position: absolute;
+        top: 72px;
+        left: 12px;
+        z-index: 999;
+        width: 320px;
+        background-color: #fff;
+        display: none;
+        font-size: 14px;
+        text-align: center;
+        max-height: 480px;
+        overflow-y: scroll;
+      }
+
       .form-control:focus {
         border-color: var(--bs-btn-border-color);
         box-shadow: none;
@@ -50,6 +64,7 @@
         line-height: 24px;
         padding: 6px 0px 6px 12px;
         position: absolute;
+        z-index: 1;
       }
 
       .alert-dismissible .btn-close {
@@ -97,11 +112,13 @@
       <input type="text" id="searchInput" class="form-control" placeholder="Graph System Name" aria-describedby="searchButton" />
       <button id="searchButton" class="btn btn-outline-secondary" type="button">Search</button>
     </div>
+    <div id="search-list"></div>
     <div id="live-alert"></div>
     <div id="node-detail"></div>
     <div id="network"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/fuzzy@0.1.3/lib/fuzzy.js"></script>
     <script src="https://unpkg.com/@antv/g6@5/dist/g6.min.js"></script>
 
     <script type="module">
@@ -890,6 +907,14 @@
         return levelMap;
       };
 
+      const toggleListVisibility = (isShow) => {
+        document.getElementById('search-list').style.display = isShow ? 'block' : 'none';
+      };
+
+      const clearSearchInput = () => {
+        document.getElementById('searchInput').value = '';
+      };
+
       const removeElement = (element) => {
         while (element.firstChild) {
           element.removeChild(element.firstChild);
@@ -914,6 +939,7 @@
 
         onNodeClick = async (event) => {
           await this.clearState();
+          toggleListVisibility(false);
 
           const { direction = 'out', onlyNeighbors } = event;
           const nodeId = event.target.id;
@@ -955,6 +981,8 @@
 
         onCanvasClick = async (event) => {
           await this.clearState();
+          toggleListVisibility(false);
+          clearSearchInput();
         };
 
         bindEvents() {
@@ -1012,6 +1040,7 @@
         liveAlert = document.getElementById('live-alert');
         searchInput = document.getElementById('searchInput');
         searchButton = document.getElementById('searchButton');
+        target;
 
         constructor(context, options) {
           super(context, options);
@@ -1035,6 +1064,33 @@
           const { graph } = this.context;
           removeElement(this.liveAlert);
 
+          const PRE = '<b style="color: #1783FF;">';
+          const POST = '</b>';
+          const filtered = fuzzy.filter(this.searchInput.value, nodes, { pre: PRE, post: POST, extract: (el) => el.id });
+          const sorted = filtered.sort((a, b) => {
+            // More matches first
+            const regx = new RegExp(PRE, 'g');
+            const aCount = (a.string.match(regx) || []).length;
+            const bCount = (b.string.match(regx) || []).length;
+            if (aCount !== bCount) return aCount - bCount;
+
+            // If the same number of matches, consecutive matches first
+            const regx_2 = new RegExp(POST + PRE, 'g');
+            const aSubCount = (a.string.match(regx_2) || []).length;
+            const bSubCount = (b.string.match(regx_2) || []).length;
+            if (aSubCount !== bSubCount) return bSubCount - aSubCount;
+
+            // If the same number of consecutive matches, earlier match position first
+            const aIndex = a.string.indexOf(PRE);
+            const bIndex = b.string.indexOf(PRE);
+            if (aIndex === -1) return 1;
+            if (bIndex === -1) return -1;
+            return aIndex - bIndex;
+          });
+          document.getElementById('search-list').innerHTML = sorted.map((el) => `<div class="mb-1">${el.string}</div>`).join('');
+          this.target = sorted[0]?.original.id || '';
+          toggleListVisibility(true);
+
           if (event.keyCode === 13) {
             event.preventDefault();
             this.searchButton.click();
@@ -1048,17 +1104,13 @@
           const searchValue = this.searchInput.value;
           if (!searchValue) return;
 
-          const target = nodes.find((node) => {
-            const regex = new RegExp(searchValue, 'i'); // fuzzy search
-            return regex.test(node.id);
-          });
-          if (target) {
-            graph.emit('node:click', { target, targetType: 'node', direction: 'out' });
-            await graph.fitView();
-          } else {
+          if (!this.target) {
             this.appendAlert('No results found for "' + searchValue + '"', 'warning');
             graph.emit('canvas:click', { targetType: 'canvas' });
           }
+
+          graph.emit('node:click', { target: graph.getNodeData(this.target), targetType: 'node', direction: 'out' });
+          await graph.fitView();
         };
 
         bindEvents() {
