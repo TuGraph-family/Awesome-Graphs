@@ -46,16 +46,6 @@
         display: none;
         font-size: 14px;
         text-align: center;
-      }
-
-      #search-list-title {
-        text-align: center;
-        font-size: 12px;
-        font-weight: 300;
-        margin-bottom: 10px;
-      }
-
-      #search-list-content {
         max-height: 480px;
         overflow-y: scroll;
       }
@@ -122,10 +112,7 @@
       <input type="text" id="searchInput" class="form-control" placeholder="Graph System Name" aria-describedby="searchButton" />
       <button id="searchButton" class="btn btn-outline-secondary" type="button">Search</button>
     </div>
-    <div id="search-list">
-      <div id="search-list-title">EXACT MATCHES</div>
-      <div id="search-list-content"></div>
-    </div>
+    <div id="search-list"></div>
     <div id="live-alert"></div>
     <div id="node-detail"></div>
     <div id="network"></div>
@@ -1100,7 +1087,7 @@
             if (bIndex === -1) return -1;
             return aIndex - bIndex;
           });
-          document.getElementById('search-list-content').innerHTML = sorted.map((el) => `<div class="mb-1">${el.string}</div>`).join('');
+          document.getElementById('search-list').innerHTML = sorted.map((el) => `<div class="mb-1">${el.string}</div>`).join('');
           this.target = sorted[0]?.original.id || '';
           toggleListVisibility(true);
 
