@@ -1267,7 +1267,7 @@
       const minDegree = Math.min(...degrees);
       const maxDegree = Math.max(...degrees);
 
-      const getNodeSize = (nodeId, minSize = 24, maxSize = 100) => {
+      const getNodeSize = (nodeId, minSize = 20, maxSize = 150) => {
         const degree = nodeId ? getNodeDegree(nodeId): 0;
         const _degree = Math.max(minDegree, Math.min(maxDegree, degree));
         return minSize + ((_degree - minDegree) / (maxDegree - minDegree)) * (maxSize - minSize);
@@ -1325,7 +1325,7 @@
         },
         layout: [
           { type: 'antv-dagre', rankdir: 'RL', ranksep: 40, nodeSize: d => getNodeSize(d.id) + 20 },
-          { type: 'hierarchical', gap: 10, nodeSize: d => getNodeSize(d.id) + 20  },
+          { type: 'hierarchical', gap: 24, nodeSize: d => getNodeSize(d.id) + 20  },
         ],
         behaviors: ['drag-element', 'drag-canvas', 'zoom-canvas', 'click-element'],
         plugins: [toolbarOption, contextmenuOption, 'search-bar', 'detail-content'],
