@@ -1003,6 +1003,53 @@
         }
       }
 
+      class HierarchicalLayout extends G6.BaseLayout {
+        async execute(data) {
+          const { gap = 10, ranksep = 30, nodeSize } = this.options;
+          const layersObject = {};
+          const nodes = data.nodes.map((node) => ({ id: node.id, style: { ...node.style } }));
+          const extraGroup = [];
+          nodes.sort((a, b) => a.style.x - a.style.x);
+          nodes.forEach((node) => {
+            const isSourceNode = data.edges.some((edge) => edge.source === node.id || (edge._bidirectional && edge.target === node.id));
+            if (!isSourceNode) {
+              extraGroup.push(node);
+            } else {
+              if (!(node.style.x in layersObject)) layersObject[node.style.x] = [];
+              layersObject[node.style.x].push(node);
+            }
+          });
+          const minKey = Math.min(...Object.keys(layersObject).map(Number)) - ranksep - 2 * (typeof nodeSize === 'function' ? nodeSize(nodes[0]) : nodeSize);
+          layersObject[minKey] = extraGroup.map((node) => {
+            node.style.x = minKey;
+            return node;
+          });
+          const layers = Object.values(layersObject);
+          const maxLayer = Math.max(...layers.map((layer) => layer.length));
+          layers.forEach((layer, i) => {
+            let occupiedPositiveY = null, occupiedNegativeY = null;
+            layer.forEach((node, j) => {
+              const size = typeof nodeSize === 'function' ? nodeSize(node) : nodeSize;
+              const halfSize = size / 2;
+              if(j === 0) {
+                node.style.y = 0;
+                occupiedPositiveY = halfSize;
+                occupiedNegativeY = -halfSize;
+                return;
+              }
+              if (j % 2 === 0) {
+                node.style.y = occupiedPositiveY + (halfSize + gap);
+                occupiedPositiveY = node.style.y + halfSize;
+              } else {
+                node.style.y = occupiedNegativeY - (halfSize + gap);
+                occupiedNegativeY = node.style.y - halfSize;
+              }
+            });
+          });
+          return { nodes };
+        }
+      }
+
       class SearchBar extends G6.BasePlugin {
         liveAlert = document.getElementById('live-alert');
         searchInput = document.getElementById('searchInput');
@@ -1158,6 +1205,7 @@
       }
 
       G6.register('behavior', 'click-element', ClickElement);
+      G6.register('layout', 'hierarchical', HierarchicalLayout);
       G6.register('plugin', 'search-bar', SearchBar);
       G6.register('plugin', 'detail-content', DetailContent);
 
@@ -1215,9 +1263,12 @@
         return relatedEdges.length;
       };
 
-      const getNodeSize = (nodeId) => {
+      const degrees = graphData.nodes.map((node) => getNodeDegree(node.id));
+      const minDegree = Math.min(...degrees);
+      const maxDegree = Math.max(...degrees);
+
+      const getNodeSize = (nodeId, minSize = 24, maxSize = 100) => {
         const degree = nodeId ? getNodeDegree(nodeId): 0;
-        const minDegree =1, maxDegree = 20, minSize = 24, maxSize = 80;
         const _degree = Math.max(minDegree, Math.min(maxDegree, degree));
         return minSize + ((_degree - minDegree) / (maxDegree - minDegree)) * (maxSize - minSize);
       };
@@ -1238,13 +1289,13 @@
             label: true,
             labelLineWidth: 2,
             labelText: datum => datum.id,
-            labelFontSize: 10,
+            labelFontSize: 12,
             labelBackground: true,
             labelBackgroundFill: "#e5e7eb",
             labelPadding: [0, 6],
             labelBackgroundRadius: 4,
             labelMaxWidth: "400%",
-            labelWordWrap: true,
+            labelWordWrap: true
           },
           state: {
             inactive: { fill: '#ccc', iconOpacity: 0, labelBackground: false },
@@ -1272,11 +1323,10 @@
             },
           },
         },
-        layout: {
-          type: 'force',
-          preventOverlap: true,
-          nodeSize: 120,
-        },
+        layout: [
+          { type: 'antv-dagre', rankdir: 'RL', ranksep: 40, nodeSize: d => getNodeSize(d.id) + 20 },
+          { type: 'hierarchical', gap: 10, nodeSize: d => getNodeSize(d.id) + 20  },
+        ],
         behaviors: ['drag-element', 'drag-canvas', 'zoom-canvas', 'click-element'],
         plugins: [toolbarOption, contextmenuOption, 'search-bar', 'detail-content'],
       });
