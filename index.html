@@ -124,12 +124,12 @@
     <script type="module">
       const BASE_URL = 'https://github.com/TuGraph-family/Awesome-Graphs/blob/master/papers/';
       const BG_COLOR = '#FFF';
-      const PAPER_NODE_COLOR = '#1783FF';
-      const DB_NODE_COLOR = '#17C76F';
+      const PAPER_NODE_COLOR = '#5F95FF';
+      const DB_NODE_COLOR = '#61DDAA';
       const UNI_EDGE_COLOR = '#CCC';
       const BI_EDGE_COLOR = '#D94801';
       // Assign color to nodes on the reference link: root, first degree, and others
-      const PALETTE = ['#1783FF', '#00C9C9', '#F08F56'];
+      const PALETTE = ['#5F95FF', '#61DDAA', '#F08F56'];
 
       // create nodes
       const nodes = [
@@ -1003,39 +1003,6 @@
         }
       }
 
-      class HierarchicalLayout extends G6.BaseLayout {
-        async execute(data) {
-          const { gap = 10, ranksep = 30, nodeSize } = this.options;
-          const layersObject = {};
-          const nodes = data.nodes.map((node) => ({ id: node.id, style: { ...node.style } }));
-          const extraGroup = [];
-          nodes.sort((a, b) => a.style.x - a.style.x);
-          nodes.forEach((node) => {
-            const isSourceNode = data.edges.some((edge) => edge.source === node.id || (edge._bidirectional && edge.target === node.id));
-            if (!isSourceNode) {
-              extraGroup.push(node);
-            } else {
-              if (!(node.style.x in layersObject)) layersObject[node.style.x] = [];
-              layersObject[node.style.x].push(node);
-            }
-          });
-          const minKey = Math.min(...Object.keys(layersObject).map(Number)) - ranksep - 2 * (typeof nodeSize === 'function' ? nodeSize(nodes[0]) : nodeSize);
-          layersObject[minKey] = extraGroup.map((node) => {
-            node.style.x = minKey;
-            return node;
-          });
-          const layers = Object.values(layersObject);
-          const maxLayer = Math.max(...layers.map((layer) => layer.length));
-          layers.forEach((layer, i) => {
-            layer.forEach((node, j) => {
-              const offset = (maxLayer - layer.length) / 2;
-              node.style.y = (offset + j) * ((typeof nodeSize === 'function' ? nodeSize(node) : nodeSize) + gap) - gap;
-            });
-          });
-          return { nodes };
-        }
-      }
-
       class SearchBar extends G6.BasePlugin {
         liveAlert = document.getElementById('live-alert');
         searchInput = document.getElementById('searchInput');
@@ -1191,7 +1158,6 @@
       }
 
       G6.register('behavior', 'click-element', ClickElement);
-      G6.register('layout', 'hierarchical', HierarchicalLayout);
       G6.register('plugin', 'search-bar', SearchBar);
       G6.register('plugin', 'detail-content', DetailContent);
 
@@ -1242,20 +1208,43 @@
         return PALETTE[order];
       };
 
+      const graphData = transformData({ nodes, edges });
+
+      const getNodeDegree = (nodeId) => {
+        const relatedEdges =  graphData.edges.filter((edge) => edge.source === nodeId || edge.target === nodeId);
+        return relatedEdges.length;
+      };
+
+      const getNodeSize = (nodeId) => {
+        const degree = nodeId ? getNodeDegree(nodeId): 0;
+        const minDegree =1, maxDegree = 20, minSize = 24, maxSize = 80;
+        const _degree = Math.max(minDegree, Math.min(maxDegree, degree));
+        return minSize + ((_degree - minDegree) / (maxDegree - minDegree)) * (maxSize - minSize);
+      };
+
       const graph = new G6.Graph({
         container: 'network',
-        data: transformData({ nodes, edges }),
+        data: graphData,
         animation: false,
         autoFit: 'view',
         padding: [0, 20, 0, 60],
         background: BG_COLOR,
         node: {
           style: {
+            size: (datum) => getNodeSize(datum.id),
             fill: (datum) => (datum._type === 'db' ? DB_NODE_COLOR : PAPER_NODE_COLOR),
             iconFontFamily: 'iconfont',
             iconText: (datum) => (datum._type === 'db' ? '\ue6ab' : '\ue7b0'),
+            label: true,
+            labelLineWidth: 2,
+            labelText: datum => datum.id,
+            labelFontSize: 10,
             labelBackground: true,
-            labelText: (datum) => datum.id,
+            labelBackgroundFill: "#e5e7eb",
+            labelPadding: [0, 6],
+            labelBackgroundRadius: 4,
+            labelMaxWidth: "400%",
+            labelWordWrap: true,
           },
           state: {
             inactive: { fill: '#ccc', iconOpacity: 0, labelBackground: false },
@@ -1283,10 +1272,11 @@
             },
           },
         },
-        layout: [
-          { type: 'antv-dagre', rankdir: 'RL', ranksep: 40 },
-          { type: 'hierarchical', gap: 25 },
-        ],
+        layout: {
+          type: 'force',
+          preventOverlap: true,
+          nodeSize: 120,
+        },
         behaviors: ['drag-element', 'drag-canvas', 'zoom-canvas', 'click-element'],
         plugins: [toolbarOption, contextmenuOption, 'search-bar', 'detail-content'],
       });
