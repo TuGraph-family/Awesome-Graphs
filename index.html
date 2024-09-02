@@ -124,12 +124,12 @@
     <script type="module">
       const BASE_URL = 'https://github.com/TuGraph-family/Awesome-Graphs/blob/master/papers/';
       const BG_COLOR = '#FFF';
-      const PAPER_NODE_COLOR = '#1783FF';
-      const DB_NODE_COLOR = '#17C76F';
+      const PAPER_NODE_COLOR = '#5F95FF';
+      const DB_NODE_COLOR = '#61DDAA';
       const UNI_EDGE_COLOR = '#CCC';
       const BI_EDGE_COLOR = '#D94801';
       // Assign color to nodes on the reference link: root, first degree, and others
-      const PALETTE = ['#1783FF', '#00C9C9', '#F08F56'];
+      const PALETTE = ['#5F95FF', '#61DDAA', '#F08F56'];
 
       // create nodes
       const nodes = [
@@ -1027,9 +1027,23 @@
           const layers = Object.values(layersObject);
           const maxLayer = Math.max(...layers.map((layer) => layer.length));
           layers.forEach((layer, i) => {
+            let occupiedPositiveY = null, occupiedNegativeY = null;
             layer.forEach((node, j) => {
-              const offset = (maxLayer - layer.length) / 2;
-              node.style.y = (offset + j) * ((typeof nodeSize === 'function' ? nodeSize(node) : nodeSize) + gap) - gap;
+              const size = typeof nodeSize === 'function' ? nodeSize(node) : nodeSize;
+              const halfSize = size / 2;
+              if(j === 0) {
+                node.style.y = 0;
+                occupiedPositiveY = halfSize;
+                occupiedNegativeY = -halfSize;
+                return;
+              }
+              if (j % 2 === 0) {
+                node.style.y = occupiedPositiveY + (halfSize + gap);
+                occupiedPositiveY = node.style.y + halfSize;
+              } else {
+                node.style.y = occupiedNegativeY - (halfSize + gap);
+                occupiedNegativeY = node.style.y - halfSize;
+              }
             });
           });
           return { nodes };
@@ -1242,20 +1256,46 @@
         return PALETTE[order];
       };
 
+      const graphData = transformData({ nodes, edges });
+
+      const getNodeDegree = (nodeId) => {
+        const relatedEdges =  graphData.edges.filter((edge) => edge.source === nodeId || edge.target === nodeId);
+        return relatedEdges.length;
+      };
+
+      const degrees = graphData.nodes.map((node) => getNodeDegree(node.id));
+      const minDegree = Math.min(...degrees);
+      const maxDegree = Math.max(...degrees);
+
+      const getNodeSize = (nodeId, minSize = 20, maxSize = 150) => {
+        const degree = nodeId ? getNodeDegree(nodeId): 0;
+        const _degree = Math.max(minDegree, Math.min(maxDegree, degree));
+        return minSize + ((_degree - minDegree) / (maxDegree - minDegree)) * (maxSize - minSize);
+      };
+
       const graph = new G6.Graph({
         container: 'network',
-        data: transformData({ nodes, edges }),
+        data: graphData,
         animation: false,
         autoFit: 'view',
         padding: [0, 20, 0, 60],
         background: BG_COLOR,
         node: {
           style: {
+            size: (datum) => getNodeSize(datum.id),
             fill: (datum) => (datum._type === 'db' ? DB_NODE_COLOR : PAPER_NODE_COLOR),
             iconFontFamily: 'iconfont',
             iconText: (datum) => (datum._type === 'db' ? '\ue6ab' : '\ue7b0'),
+            label: true,
+            labelLineWidth: 2,
+            labelText: datum => datum.id,
+            labelFontSize: 12,
             labelBackground: true,
-            labelText: (datum) => datum.id,
+            labelBackgroundFill: "#e5e7eb",
+            labelPadding: [0, 6],
+            labelBackgroundRadius: 4,
+            labelMaxWidth: "400%",
+            labelWordWrap: true
           },
           state: {
             inactive: { fill: '#ccc', iconOpacity: 0, labelBackground: false },
@@ -1284,8 +1324,8 @@
           },
         },
         layout: [
-          { type: 'antv-dagre', rankdir: 'RL', ranksep: 40 },
-          { type: 'hierarchical', gap: 25 },
+          { type: 'antv-dagre', rankdir: 'RL', ranksep: 40, nodeSize: d => getNodeSize(d.id) + 20 },
+          { type: 'hierarchical', gap: 24, nodeSize: d => getNodeSize(d.id) + 20  },
         ],
         behaviors: ['drag-element', 'drag-canvas', 'zoom-canvas', 'click-element'],
         plugins: [toolbarOption, contextmenuOption, 'search-bar', 'detail-content'],
